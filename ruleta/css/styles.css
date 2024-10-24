@@ -1,0 +1,190 @@
+/* Estilo Global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url("../images/telon.gif"); /* La ruta que estás usando */
+    background-size: cover; /* Asegura que cubra toda la pantalla */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que se repita */
+    background-attachment:fixed; /* Fija la imagen de fondo al scroll */
+    height: 100vh; /* Asegura que el body ocupe el 100% de la altura de la pantalla */
+    font-family: 'Press Start 2P', cursive;
+    text-align: center;
+}
+/* Grid Layout para el juego */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    height: 100vh;
+}
+
+.grid-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wheel-section {
+    grid-column: 2 / 3; /* Columna del medio */
+    grid-row: 1 / 4; /* Ocupar las tres filas */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gif {
+    grid-column: 1 / 2; /* Primera columna */
+    grid-row: 3 / 4; /* Última fila */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gif-img {
+    width: 300px;
+    margin-top: 10px;
+}
+
+/* Pantalla centrada */
+.centered-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+/* Estilo del texto "Press Start" */
+#pressStartText {
+    font-size: 30px;
+    color: #fff;
+    animation: blink 1s step-end infinite;
+}
+
+#pressStartText:hover {
+    font-size: 35px;
+    text-shadow: 0 0 10px #fff;
+    border-radius: 15px;
+    color: #ffffff;
+    animation: none;
+}
+
+/* Animación de parpadeo */
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Esconde secciones que no se muestran aún */
+.hidden {
+    display: none;
+}
+
+/* Estilo de los botones del menú */
+.menuBtn {
+    margin-top: 20px;
+    background-color: #FF6B6B;
+    color: #fff;
+    padding: 10px 20px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 4px #333;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+}
+
+.menuBtn:hover {
+    background-color: #FF3B3B;
+    box-shadow: 0 0 15px #FF3B3B, 0 0 25px #FF3B3B;
+}
+
+/* Estilo de la ruleta */
+#wheelCtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+canvas {
+    background-color: #222;
+    border-radius: 150px;
+    box-shadow: 0 0 10px #FF6B6B, 0 0 20px #FF6B6B;
+}
+
+/* Estilo del resultado */
+#resultEl {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Press Start 2P', cursive;
+    color: #00FF41;
+}
+
+/* Estilo de flecha */
+#arrowEl {
+    margin-bottom: 10px;
+    font-size: 50px;
+    color: #FF6B6B;
+    text-shadow: 0 0 10px #FF6B6B, 0 0 20px #FF6B6B;
+}
+
+/* Estilo de los botones de selección de jugadores */
+.playersBtn {
+    font-size: 24px;
+    color: #fff;
+    font-family: 'Press Start 2P', cursive;
+    background-color: transparent;
+    border: 2px solid transparent;
+    border-radius: 15px;
+    margin: 20px;
+    padding: 10px 20px;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+    cursor: pointer;
+}
+
+.playersBtn:hover {
+    font-size: 30px;
+    text-shadow: 0 0 10px #fff;
+}
+ /* Estilo de cuadro de dialogo*/
+ /* Estilo del cuadro de diálogo */
+.dialog-box {
+    margin-bottom: 350px;
+    width: 80%;
+    max-width: 400px;
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco semitransparente */
+    border: 4px solid #000;
+    border-radius: 10px;
+    padding: 15px;
+    position: absolute;
+    bottom: 60px; /* Ajusta la posición vertical del diálogo, por encima del GIF */
+    left: 20px; /* Ajusta la posición horizontal del diálogo */
+    font-size: 12px;
+    color: #000;
+    text-align: left;
+    box-shadow: 4px 4px 0 #333;
+    z-index: 10; /* Asegúrate de que este valor sea mayor que el del GIF */
+}
+
+.dialog-text {
+    line-height: 1.8;
+}
+
+#dialogText {
+    white-space: pre-wrap; /* Preserva los saltos de línea en el texto */
+    word-wrap: break-word;
+}
+
+
+
+
