@@ -1,4 +1,5 @@
 /* Estilo Global */
+/* Estilo Global */
 * {
     margin: 0;
     padding: 0;
@@ -6,28 +7,51 @@
 }
 
 body {
-    background-image: url("../images/telon.gif"); /* La ruta que estás usando */
-    background-size: cover; /* Asegura que cubra toda la pantalla */
-    background-position: center; /* Centra la imagen */
-    background-repeat: no-repeat; /* Evita que se repita */
-    background-attachment:fixed; /* Fija la imagen de fondo al scroll */
-    height: 100vh; /* Asegura que el body ocupe el 100% de la altura de la pantalla */
+    background-color: #ccc;
+    background-image: url("../images/telon.gif"); /* Asegúrate de que la ruta sea correcta */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     font-family: 'Press Start 2P', cursive;
-    text-align: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-/* Grid Layout para el juego */
+
+/* Contenedor principal con grid */
 .grid-container {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr auto 1fr;
+    grid-gap: 20px;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+}
+
+/* GIF en los extremos */
+.gif {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gif-img {
+    width: 200px; /* Ajusta el tamaño de los GIFs si es necesario */
+}
+
+
+/* Centramos todo en pantalla */
+.centered-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100vh;
 }
 
-.grid-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+
 
 .wheel-section {
     grid-column: 2 / 3; /* Columna del medio */
@@ -35,28 +59,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.gif {
-    grid-column: 1 / 2; /* Primera columna */
-    grid-row: 3 / 4; /* Última fila */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.gif-img {
-    width: 300px;
-    margin-top: 10px;
-}
-
-/* Pantalla centrada */
-.centered-screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
 }
 
 /* Estilo del texto "Press Start" */
@@ -87,7 +89,7 @@ body {
 }
 
 /* Estilo de los botones del menú */
-.menuBtn {
+.spinBtn {
     margin-top: 20px;
     background-color: #FF6B6B;
     color: #fff;
@@ -102,7 +104,7 @@ body {
     border-radius: 5px;
 }
 
-.menuBtn:hover {
+.spinBtn:hover {
     background-color: #FF3B3B;
     box-shadow: 0 0 15px #FF3B3B, 0 0 25px #FF3B3B;
 }
@@ -156,35 +158,43 @@ canvas {
     font-size: 30px;
     text-shadow: 0 0 10px #fff;
 }
- /* Estilo de cuadro de dialogo*/
- /* Estilo del cuadro de diálogo */
+
+/* Estilo del cuadro de diálogo */
 .dialog-box {
-    margin-bottom: 350px;
-    width: 80%;
+    width: 100%;
     max-width: 400px;
-    background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco semitransparente */
+background-color: #fff;
     border: 4px solid #000;
-    border-radius: 10px;
+    border-radius: 0px; /* Bordes rectos para el estilo 8 bits */
     padding: 15px;
     position: absolute;
-    bottom: 60px; /* Ajusta la posición vertical del diálogo, por encima del GIF */
-    left: 20px; /* Ajusta la posición horizontal del diálogo */
+    bottom: 60px;
+    left: 20px;
     font-size: 12px;
     color: #000;
     text-align: left;
     box-shadow: 4px 4px 0 #333;
-    z-index: 10; /* Asegúrate de que este valor sea mayor que el del GIF */
+    z-index: 10;
+    display: inline-grid;
+    justify-content: center;
+    margin: auto;
 }
 
-.dialog-text {
-    line-height: 1.8;
-}
-
-#dialogText {
-    white-space: pre-wrap; /* Preserva los saltos de línea en el texto */
-    word-wrap: break-word;
+.gif-img {
+    width: 300px;
+    margin-top: 10px;
 }
 
 
 
+.nes-container.with-title>.title {
+    display: table;
+    padding: 0 .5rem;
+    margin: -1.8rem 0 1rem;
+    font-size: 1rem;
+    background-color: #fff !important;
+}
 
+#btnLogin{
+    margin:10px;
+}

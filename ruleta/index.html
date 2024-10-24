@@ -6,7 +6,6 @@
     <title>Rueda de la Fortuna</title>
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./node_modules/nes.css/css/nes.min.css">
 
     <audio id="hoverSound" src="audio/hover.mp3"></audio>
     <audio id="spinSound" src="audio/spin.mp3"></audio>
@@ -15,8 +14,8 @@
     <audio id="backgroundMusic" src="audio/music.mp3"></audio> 
 
 </head>
-<body>
-    
+<body >
+    <div class="rain">
     <!-- Pantalla de inicio -->
     <div id="startScreen" class="centered-screen">
         <div class="sign three">
@@ -44,7 +43,7 @@
         <div class="grid-item wheel-section">
             <div id="arrowEl"><img src="images/arrow.png" style="width: 50px;"></div>
             <canvas id="wheelCanvas" width="300" height="300"></canvas>
-            <button id="spinBtn" class="menuBtn">¡GIRAR LA RUEDA!</button>
+            <button id="spinBtn" class="spinBtn">¡GIRAR LA RUEDA!</button>
             <div id="resultEl"></div>
             <button id="backBtn" class="playersBtn">ATRAS</button>
         </div>
@@ -63,5 +62,7 @@
     </div>
 
     <script src="js/script.js" defer></script>
+    <script src="js/background.js" defer></script>
+</div>
 </body>
 </html>
