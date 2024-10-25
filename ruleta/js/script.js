@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('backBtn').addEventListener('click', function () {
         // Detener el sonido si está reproduciéndose
         spinSound.pause();
-       resetDialogText() ;
+        //resetDialogText() ;
         
         // Limpiar el resultado si existe
         if (document.getElementById('resultEl')) {
