@@ -1,15 +1,13 @@
-/* Estilo Global */
-/* Estilo Global */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-
 body {
     background-color: #ccc;
-    background-image: url("../images/telon.gif"); /* Asegúrate de que la ruta sea correcta */
-    background-size: cover;
+    
+    background-image: url("../images/gameboy.png"); /* Asegúrate de que la ruta sea correcta */
+    background-size:cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -36,16 +34,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.gif-img {
-    width: 200px; /* Ajusta el tamaño de los GIFs si es necesario */
+    flex-direction: column;
 }
 
 
 /* Centramos todo en pantalla */
 .centered-screen {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -64,15 +60,15 @@ body {
 /* Estilo del texto "Press Start" */
 #pressStartText {
     font-size: 30px;
-    color: #fff;
+    color: #493649;
     animation: blink 1s step-end infinite;
 }
 
 #pressStartText:hover {
     font-size: 35px;
-    text-shadow: 0 0 10px #fff;
+    text-shadow: 0 0 10px #8e777f;
     border-radius: 15px;
-    color: #ffffff;
+    color: #fff;
     animation: none;
 }
 
@@ -91,11 +87,11 @@ body {
 /* Estilo de los botones del menú */
 .spinBtn {
     margin-top: 20px;
-    background-color: #FF6B6B;
+    background-color: #493649;
     color: #fff;
     padding: 10px 20px;
     font-family: 'Press Start 2P', cursive;
-    font-size: 16px;
+    font-size: 20px;
     border: none;
     cursor: pointer;
     text-transform: uppercase;
@@ -105,8 +101,9 @@ body {
 }
 
 .spinBtn:hover {
-    background-color: #FF3B3B;
-    box-shadow: 0 0 15px #FF3B3B, 0 0 25px #FF3B3B;
+    background-color: #fff;
+    color: #493649;
+    box-shadow: 0 0 15px #8e777f, 0 0 25px #8e777f;
 }
 
 /* Estilo de la ruleta */
@@ -118,9 +115,9 @@ body {
 }
 
 canvas {
-    background-color: #222;
+    background-color: #493649;
     border-radius: 150px;
-    box-shadow: 0 0 10px #FF6B6B, 0 0 20px #FF6B6B;
+    box-shadow: 0 0 15px #8e777f, 0 0 25px #8e777f;
 }
 
 /* Estilo del resultado */
@@ -143,7 +140,7 @@ canvas {
 /* Estilo de los botones de selección de jugadores */
 .playersBtn {
     font-size: 24px;
-    color: #fff;
+    color: #493649;
     font-family: 'Press Start 2P', cursive;
     background-color: transparent;
     border: 2px solid transparent;
@@ -156,6 +153,7 @@ canvas {
 
 .playersBtn:hover {
     font-size: 30px;
+    color: #fff;
     text-shadow: 0 0 10px #fff;
 }
 
@@ -163,7 +161,7 @@ canvas {
 .dialog-box {
     width: 100%;
     max-width: 400px;
-background-color: #fff;
+    background-color: #fff;
     border: 4px solid #000;
     border-radius: 0px; /* Bordes rectos para el estilo 8 bits */
     padding: 15px;
@@ -194,7 +192,9 @@ background-color: #fff;
     font-size: 1rem;
     background-color: #fff !important;
 }
-
+.nes-input, .nes-textarea, .nes-btn{
+     border-image-repeat:stretch !important; 
+}
 #btnLogin{
     margin:10px;
 }
