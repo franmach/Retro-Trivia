@@ -3,8 +3,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const startScreen = document.getElementById('startScreen');
     const playerSelectionScreen = document.getElementById('playerSelectionScreen');
     const gameScreen = document.getElementById('gameScreen');
+
     const canvas = document.getElementById('wheelCanvas');
-    const ctx = canvas.getContext('2d');
+    if (canvas) {
+        const ctx = canvas.getContext('2d');
+    } else {
+        console.warn('El elemento canvas no está disponible en esta página');
+    }    
+    
     const dialogTextElement = document.getElementById('dialogText');
 
     // Audio
@@ -43,6 +49,8 @@ document.addEventListener('DOMContentLoaded', function () {
             typing.pause();  // Detener el sonido cuando se termine de escribir
         }
     }
+
+
     
 
     // Eventos de inicio

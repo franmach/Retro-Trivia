@@ -1,35 +1,98 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rueda de la Fortuna - Login</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./node_modules/nes.css/css/nes.min.css">
+<!DOCTYPE html>  
+<html lang="es">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Rueda de la Fortuna - Login</title>  
+    <link rel="stylesheet" href="css/styles.css">  
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">  
+    <link rel="stylesheet" href="./node_modules/nes.css/css/nes.min.css">  
 
-    <audio id="hoverSound" src="audio/hover.mp3"></audio>
-    <audio id="spinSound" src="audio/spin.mp3"></audio>
-    <audio id="menuSound" src="audio/menu.mp3"></audio>
-    <audio id="typingSound" src="audio/typing.mp3" loop></audio>
-    <audio id="backgroundMusic" src="audio/music.mp3"></audio>
-</head>
-<body>
-    <div id="loginScreen" class="grid-container centered-screen">
+    <audio id="hoverSound" src="audio/hover.mp3"></audio>  
+    <audio id="spinSound" src="audio/spin.mp3"></audio>  
+    <audio id="menuSound" src="audio/menu.mp3"></audio>  
+    <audio id="typingSound" src="audio/typing.mp3" loop></audio>  
+    <audio id="backgroundMusic" src="audio/music.mp3"></audio>  
+</head>  
+<body>  
+    <div id="loginScreen" class="grid-container centered-screen">  
 
-        <!-- Cuadro de diálogo para ingresar nombre -->
-        <div class="grid-item dialog-box nes-container with-title">
-            <h3 class="title" style="width: fit-content;">Login</h3>
-                <label for="txtNombre">Nombre</label>
-                <input type="text" id="txtNombre" class="nes-input">
+       <!-- Cuadro de diálogo para ingresar nombre -->  
+       <div class="grid-item loginForm nes-container with-title">  
+        <h3 class="title" style="width: fit-content; font-size: 20px;">Ingresar</h3>  
 
-                <label for="txtContrasena">Contraseña</label>
+        <label for="txtRegisterEmail">Email</label>  
+        <input type="email" id="txtRegisterEmail" class="nes-input">  
 
-                <input type="password" id="txtContrasena" class="nes-input">
-            <button id="btnLogin" class="nes-btn is-error">Login</button>
-        </div>
+        <label for="txtLoginContrasena">Contraseña</label>  
+        <input type="password" id="txtLoginContrasena" class="nes-input">
 
-      
-    </div>
-</body>
+        <button id="btnLogin" class="nes-btn" onmouseover="hoverSound.currentTime = 0, hoverSound.play()" 
+        onclick="menuSound.play()">Login</button>  
+        <a
+           onmouseover="cambiarTexto()"   
+           onmouseout="restaurarTexto()"   
+           onclick="aRegistro()"   
+           id="registrarse">¿Aun no estás registrado?</a>  
+    </div>  
+    
+    </div>  
+
+    <div id="registerScreen" class="hidden grid-container centered-screen">  
+
+        <!-- Cuadro de diálogo para ingresar nombre -->  
+        <div class="grid-item loginForm nes-container with-title">  
+            <h3 class="title" style="width: fit-content; font-size: 20px;">Registrarse</h3>  
+
+            <label for="txtRegisterNombre">Nombre completo</label>  
+            <input type="text" id="txtRegisterNombre" class="nes-input">  
+
+            <label for="txtRegisterEmail">Email</label>  
+            <input type="email" id="txtRegisterEmail" class="nes-input">  
+
+            <label for="txtRegisterContrasena">Contraseña</label>  
+            <input type="password" id="txtRegisterContrasena" class="nes-input">  
+
+            <button id="btnRegistrarse" class="nes-btn" onmouseover="hoverSound.currentTime = 0, hoverSound.play()" 
+            onclick="menuSound.play()">Registrarse</button>  
+        </div>  
+    
+    </div>  
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script>
+        // Definimos las funciones cambiarTexto y restaurarTexto directamente en el HTML
+        function cambiarTexto() {  
+            document.getElementById("registrarse").innerText = "Registrarse";  
+            const hoverSound = document.getElementById("hoverSound");
+            hoverSound.currentTime=0;
+            hoverSound.play(); // Sonido al hover  
+        }  
+
+        function restaurarTexto() {  
+            
+            document.getElementById("registrarse").innerText = "¿Aun no estás registrado?";  
+        }  
+
+        function aRegistro() {  
+            document.getElementById('loginScreen').classList.add('hidden');  
+            document.getElementById('registerScreen').classList.remove('hidden');  
+            const menuSound = document.getElementById('menuSound');
+            if (menuSound) menuSound.play(); // Sonido al cambiar de pantalla  
+        }   
+    </script>
+
+    <script src="js/script.js" defer></script> 
+</body>  
 </html>
