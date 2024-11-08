@@ -6,12 +6,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Configuración de canvas y contexto
     const canvas = document.getElementById('wheelCanvas');
-    const ctx = canvas ? canvas.getContext('2d') : null;
-
-    if (!ctx) {
-        console.warn('El contexto del canvas no está disponible');
-        return;
-    }
+    const ctx = canvas.getContext('2d');
+    
 
     const dialogTextElement = document.getElementById('dialogText');
 
@@ -52,12 +48,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('onePlayerBtn').addEventListener('click', function () {
         playerSelectionScreen.classList.add('hidden');
+        gameScreen.classList.add('grid-container')
         gameScreen.classList.remove('hidden');
         startTextAnimation();
     });
 
     document.getElementById('twoPlayersBtn').addEventListener('click', function () {
         playerSelectionScreen.classList.add('hidden');
+        gameScreen.classList.add('grid-container')
         gameScreen.classList.remove('hidden');
         startTextAnimation();
     });
@@ -72,7 +70,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         
         document.getElementById('spinBtn').disabled = false;
-        gameScreen.classList.add('hidden');
+        
+        // Ocultar la pantalla de juego y mostrar la de selección de jugadores
+        gameScreen.classList.remove('grid-container')
+
+        
         playerSelectionScreen.classList.remove('hidden');
     });
 
@@ -217,4 +219,6 @@ document.addEventListener('DOMContentLoaded', function () {
             menuSound.pause();
         });
     });
+
+
 });
