@@ -5,11 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const gameScreen = document.getElementById('gameScreen');
 
     const canvas = document.getElementById('wheelCanvas');
-    if (canvas) {
-        const ctx = canvas.getContext('2d');
-    } else {
-        console.warn('El elemento canvas no está disponible en esta página');
-    }    
+    const ctx = canvas.getContext('2d');
+    
     
     const dialogTextElement = document.getElementById('dialogText');
 
@@ -63,12 +60,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // Selección de número de jugadores
     document.getElementById('onePlayerBtn').addEventListener('click', function () {
         playerSelectionScreen.classList.add('hidden');
+        gameScreen.classList.add('grid-container')
         gameScreen.classList.remove('hidden');
         startTextAnimation();
     });
 
     document.getElementById('twoPlayersBtn').addEventListener('click', function () {
         playerSelectionScreen.classList.add('hidden');
+        gameScreen.classList.add('grid-container')
         gameScreen.classList.remove('hidden');
         startTextAnimation();
     });
@@ -91,7 +90,9 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('spinBtn').disabled = false;
         
         // Ocultar la pantalla de juego y mostrar la de selección de jugadores
+        gameScreen.classList.remove('grid-container')
         gameScreen.classList.add('hidden');
+        
         playerSelectionScreen.classList.remove('hidden');
     });
 
@@ -258,4 +259,12 @@ document.addEventListener('DOMContentLoaded', function () {
             menuSound.pause();
         });
     });
+
+
+
+
+ 
+
+
+    
 });

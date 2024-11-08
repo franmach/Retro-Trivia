@@ -1,12 +1,17 @@
+/* General Reset */
+/*
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
+*/
+
+/* Estilos del Body */
 body {
     background-color: #ccc;
-    background-image: url("../images/gameboy.png"); /* Asegúrate de que la ruta sea correcta */
-    background-size:cover;
+    background-image: url("../images/gameboy.png"); /* Fondo con imagen de Game Boy */
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -15,9 +20,90 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0;
+    overflow: hidden; /* Evita scroll en la ventana */
 }
 
-/* Contenedor principal con grid */
+/* Contenedor principal que actúa como la pantalla visible */
+.gameboy-container {
+    width: 80%; /* Ajusta para que encaje en el área transparente de la Game Boy */
+    height: 70%; /* Ajusta para que encaje en el área transparente de la Game Boy */
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+
+/* Clase para ocultar completamente una pantalla (Login o Registro) */
+.hidden {
+    display: none;
+}
+
+/* Estilo del formulario (aplicado a loginForm en ambas pantallas) */
+.loginForm {
+    width: 100%;
+    max-width: 400px;
+    background-color: #fff;
+    border: 4px solid #000;
+    border-radius: 0px; /* Bordes rectos para el estilo 8 bits */
+    padding: 15px;
+    font-size: 12px;
+    color: #000;
+    text-align: left;
+    box-shadow: 4px 4px 0 #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centra el contenido verticalmente */
+    margin: auto;
+}
+
+#btnAlerta{
+    font-size: 15px;
+    align-self: center;
+    width: fit-content;
+    color: white;
+    padding: 10px;
+    background-color: #493649; 
+}
+
+/* Estilos para los botones de Login y Registro */
+#btnLogin, #btnRegistrarse{
+    font-size: 15px;
+    align-self: center;
+    width: fit-content;
+    color: white;
+    margin:30px;
+    padding: 10px;
+    background-color: #493649;
+
+}
+#btnLogin:hover,#btnRegistrarse:hover,#btnAlerta:hover{
+
+    background-color: #8e777f;
+    color: #493649;
+    box-shadow: 0 0 15px #493649, 0 0 25px #493649;
+}
+
+/* Estilo para el enlace "¿Aun no estás registrado?" */
+#registrarse {  
+    text-decoration: none;  
+    color: black;  
+    align-self: center;
+    display: block;
+}  
+
+#registrarse:hover {  
+    color: #493649;  
+    content: "Registrarse";  
+}
+
+/* Contenedor principal con grid (rueda y elementos laterales) */
 .grid-container {
     display: grid;
     grid-template-columns: 1fr auto 1fr;
@@ -28,7 +114,7 @@ body {
     padding: 20px;
 }
 
-/* GIF en los extremos */
+/* Configuración de elementos GIF */
 .gif {
     display: flex;
     justify-content: center;
@@ -36,18 +122,13 @@ body {
     flex-direction: column;
 }
 
-
-/* Centramos todo en pantalla */
-.centered-screen {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+.gif-img {
+    width: 100px;
+    margin-top: 10px;
 }
 
 
-
+/* Configuración específica de ruleta */
 .wheel-section {
     grid-column: 2 / 3; /* Columna del medio */
     grid-row: 1 / 4; /* Ocupar las tres filas */
@@ -56,31 +137,18 @@ body {
     align-items: center;
 }
 
-/* Estilo del texto "Press Start" */
-#pressStartText {
-    font-size: 30px;
-    color: #493649;
-    animation: blink 1s step-end infinite;
+/* Estilo de la ruleta */
+#wheelCtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
 }
 
-#pressStartText:hover {
-    font-size: 35px;
-    text-shadow: 0 0 10px #8e777f;
-    border-radius: 15px;
-    color: #fff;
-    animation: none;
-}
-
-/* Animación de parpadeo */
-@keyframes blink {
-    50% {
-        opacity: 0;
-    }
-}
-
-/* Esconde secciones que no se muestran aún */
-.hidden {
-    display: none;
+canvas {
+    background-color: #493649;
+    border-radius: 150px;
+    box-shadow: 0 0 15px #8e777f, 0 0 25px #8e777f;
 }
 
 /* Estilo de los botones del menú */
@@ -105,18 +173,26 @@ body {
     box-shadow: 0 0 15px #8e777f, 0 0 25px #8e777f;
 }
 
-/* Estilo de la ruleta */
-#wheelCtn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
+/* Estilos de texto animado "Press Start" */
+#pressStartText {
+    font-size: 30px;
+    color: #493649;
+    animation: blink 1s step-end infinite;
 }
 
-canvas {
-    background-color: #493649;
-    border-radius: 150px;
-    box-shadow: 0 0 15px #8e777f, 0 0 25px #8e777f;
+#pressStartText:hover {
+    font-size: 35px;
+    text-shadow: 0 0 10px #8e777f;
+    border-radius: 15px;
+    color: #fff;
+    animation: none;
+}
+
+/* Animación de parpadeo */
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
 }
 
 /* Estilo del resultado */
@@ -177,76 +253,24 @@ canvas {
     margin: auto;
 }
 
-
-
-.gif-img {
-    width: 300px;
-    margin-top: 10px;
+/* Ajustes específicos de NES.css */
+.nes-container {
+    position: unset !important; 
 }
 
-
-
-.nes-container.with-title>.title {
+.nes-container.with-title > .title {
     background-color: #fff !important;
 }
-.nes-input, .nes-textarea, .nes-btn{
-     border-image-repeat:stretch !important; 
+
+.nes-input, .nes-textarea, .nes-btn {
+    border-image-repeat: stretch !important; 
 }
-.nes-input{
+
+.nes-input {
     font-size: 15px !important;
 }
-label{
+
+label {
     margin: 20px;
     font-size: 15px;
 }
-
-.loginForm{
-    width: 100%;
-    max-width: 400px;
-    background-color: #fff;
-    border: 4px solid #000;
-    border-radius: 0px; /* Bordes rectos para el estilo 8 bits */
-    padding: 15px;
-    position: absolute;
-    bottom: 60px;
-    left: 20px;
-    font-size: 12px;
-    color: #000;
-    text-align: left;
-    box-shadow: 4px 4px 0 #333;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin: auto;
-}
-
-#btnLogin, #btnRegistrarse{
-    font-size: 15px;
-    align-self: center;
-    width: fit-content;
-    color: white;
-    margin:30px;
-    padding: 10px;
-    background-color: #493649;
-
-}
-#btnLogin:hover,#btnRegistrarse:hover{
-
-    background-color: #8e777f;
-    color: #493649;
-    box-shadow: 0 0 15px #493649, 0 0 25px #493649;
-}
-
-#registrarse {  
-    text-decoration: none;  
-    color: black;  
-    align-self: center;
-    display: block;
-  }  
-  
-  #registrarse:hover {  
-    color: #493649;  
-    content: "Registrarse";  
-    
-  }
