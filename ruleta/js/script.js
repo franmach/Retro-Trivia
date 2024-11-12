@@ -6,8 +6,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Configuración de canvas y contexto
     const canvas = document.getElementById('wheelCanvas');
-    const ctx = canvas.getContext('2d');
-    
+    const ctx = canvas ? canvas.getContext('2d') : null;
+
+    if (!ctx) {
+        console.warn('El contexto del canvas no está disponible');
+        return;
+    }
 
     const dialogTextElement = document.getElementById('dialogText');
 
@@ -48,14 +52,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('onePlayerBtn').addEventListener('click', function () {
         playerSelectionScreen.classList.add('hidden');
-        gameScreen.classList.add('grid-container')
         gameScreen.classList.remove('hidden');
         startTextAnimation();
     });
 
     document.getElementById('twoPlayersBtn').addEventListener('click', function () {
         playerSelectionScreen.classList.add('hidden');
-        gameScreen.classList.add('grid-container')
         gameScreen.classList.remove('hidden');
         startTextAnimation();
     });
@@ -70,11 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         
         document.getElementById('spinBtn').disabled = false;
-        
-        // Ocultar la pantalla de juego y mostrar la de selección de jugadores
-        gameScreen.classList.remove('grid-container')
-
-        
+        gameScreen.classList.add('hidden');
         playerSelectionScreen.classList.remove('hidden');
     });
 
@@ -187,7 +185,20 @@ document.addEventListener('DOMContentLoaded', function () {
             let degrees = angle * 180 / Math.PI + 90;
             let arcd = 360 / sections.length;
             let index = Math.floor((360 - degrees % 360) / arcd);
+
+            // Capturar la categoría seleccionada
+            let categoriaSeleccionada = sections[index];
+    
+            // Guardar la categoría en localStorage para que esté disponible en la siguiente página
+            localStorage.setItem('categoriaSeleccionada', categoriaSeleccionada);
+
             document.getElementById('resultEl').textContent = `Has caído en: ${sections[index]}`;
+
+            // Aquí podrías redirigir a la nueva página de preguntas
+            setTimeout(() => {
+            window.location.href = 'pregunta.html'; // Redirige a la página de pregunta después de mostrar la categoría
+            }, 2000); // Ajusta el tiempo de espera según lo que necesites
+            
         }
 
         function easeOut(t, b, c, d) {
@@ -219,6 +230,4 @@ document.addEventListener('DOMContentLoaded', function () {
             menuSound.pause();
         });
     });
-
-
 });
