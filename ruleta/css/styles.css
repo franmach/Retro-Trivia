@@ -7,6 +7,8 @@
 }
 */
 
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 /* Estilos del Body */
 body {
     background-color: #ccc;
@@ -273,4 +275,89 @@ canvas {
 label {
     margin: 20px;
     font-size: 15px;
+}
+
+/*ESTILOS AGREGADOS POR LEO PARA PAGINA PREGUNTA*/
+
+/* Estilos para alinear la pregunta y el cronómetro horizontalmente */
+.pregunta-y-cronometro {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#cronometroContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 20px; /* Espacio entre la pregunta y el cronómetro */
+    text-align: center;
+}
+
+/* Contenedor principal para simular pantalla Gameboy */
+#preguntaContainer {
+    width: 400px; /* Ancho máximo de la pantalla estilo Gameboy */
+    margin: 0 auto; /* Centrar el contenedor */
+    padding: 10px;
+    border: 4px solid #1d2b53; /* Bordes gruesos */
+    background-color: #d7f0c2; /* Fondo en tonos verdes */
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra para resaltar */
+    border-radius: 8px;
+}
+
+/* Pregunta con ajuste de texto automático */
+#preguntaTexto {
+    font-family: 'Press Start 2P', sans-serif;
+    font-size: 14px;
+    color: #1d2b53;
+    line-height: 1.4; /* Espacio entre líneas para mejorar legibilidad */
+    word-wrap: break-word; /* Ajuste automático de texto largo */
+    overflow-wrap: break-word;
+    margin-bottom: 15px;
+}
+
+#contadorTiempo {
+    margin-top: 5px; /* Separación entre la imagen del cronómetro y el número */
+    font-size: 16px;
+}
+
+/* Estilo de 8 bits para botones */
+.opcionBtn {
+    background-color: #9bbc0f;
+    color: #1d2b53;
+    border: 4px solid #1d2b53;
+    font-family: 'Press Start 2P', sans-serif;
+    font-size: 12px;
+    padding: 10px 15px;
+    margin: 5px 0;
+    width: 80%; /* Ajustar el ancho para que no se desborde */
+    max-width: 220px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+}
+
+#cronometroContainer {
+    position: absolute;
+    top: 50%; /* Coloca el cronómetro en el centro vertical del contenedor */
+    right: 400px; /* Desplaza un poco hacia la izquierda para un 70% aproximado */
+    transform: translateY(-50%); /* Centra verticalmente el cronómetro */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Hover para dar sensación de botón presionado */
+.opcionBtn:hover {
+    background-color: #8bac0f; /* Oscurecer un poco al hacer hover */
+    transform: scale(1.05); /* Pequeño efecto de aumento */
+}
+
+/* Efecto al presionar el botón */
+.opcionBtn:active {
+    background-color: #1d2b53; /* Oscurecer al presionar */
+    color: #9bbc0f; /* Cambiar color de texto al presionar */
+    transform: scale(0.95); /* Ligeramente más pequeño */
 }
