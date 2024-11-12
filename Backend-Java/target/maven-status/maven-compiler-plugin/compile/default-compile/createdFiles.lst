@@ -1,0 +1,17 @@
+controller\PreguntaController.class
+model\Multijugador.class
+model\ConfiguracionDelJuego.class
+model\Partida.class
+model\Estadisticas.class
+model\Categoria.class
+model\Cronometro.class
+configuration\WebConfig.class
+model\Jugador.class
+com\example\BasicApplication.class
+model\ApiManager.class
+model\Pregunta.class
+model\Respuesta.class
+configuration\RestTemplateConfig.class
+model\Resultado.class
+model\SistemaAutenticacion.class
+model\Ranking.class
