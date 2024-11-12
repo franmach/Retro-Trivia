@@ -9,7 +9,13 @@
 <body>
     <div id="preguntaContainer" class="centered-screen">
         <h2 id="categoria"></h2>
-        <p id="preguntaTexto"></p>
+        <div class="pregunta-y-cronometro">
+            <p id="preguntaTexto"></p>
+            <div id="cronometroContainer">
+                <img src="images/crono.png" alt="Cronómetro" id="cronometroImg" width="40" height="60">
+                <div id="contadorTiempo">0</div> segundos
+            </div>
+        </div>
         <div id="opciones">
             <button class="opcionBtn" id="opcion1"></button>
             <button class="opcionBtn" id="opcion2"></button>
