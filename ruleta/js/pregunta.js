@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Colores específicos para botones preguntas y opciones según la categoría
     const categoriaColores = {
         Entretenimiento: '#cf321f',
-        Arte: '#fff',
+        Arte: '#051baf',
         Geografia: '#2e77b8',
         Deportes: '#ff5c01',
         Ciencia: 'black',
@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 case 'Corona':
                     colorPregunta.style.color = 'black';
                     break;
+                
               
 
             }
