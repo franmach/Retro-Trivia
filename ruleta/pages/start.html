@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rueda de la Fortuna</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/start.css">
+    <link rel="stylesheet" href="../node_modules/nes.css/css/nes.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Contenedor principal de la Game Boy -->
+    <div class="gameboy-container">
+
+        <!-- Pantalla de inicio -->
+        <div id="startScreen" class="centered-screen">
+                <img src="../images/logito.png" width="600px">
+            <p id="pressStartText"  class="menuBtn">Press Start</p>
+        </div>
+
+    </div>
+    
+    <script src="../js/audioController.js" defer></script>
+
+    <script src="../js/start.js" defer></script>
+    <audio id="musica" src="../audio/music.mp3"></audio>
+
+</body>
+</html>

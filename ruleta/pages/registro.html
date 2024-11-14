@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rueda de la Fortuna - Login</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../node_modules/nes.css/css/nes.min.css">
+
+    <audio id="hoverSound" src="../audio/hover.mp3"></audio>
+    <audio id="menuSound" src="../audio/menu.mp3"></audio>
+</head>
+
+<body>
+    <div class="gameboy-container">
+        <!-- Pantalla de Registro (oculta por defecto) -->
+        <div id="registerScreen" class="hidden">
+            <div class="loginForm nes-container with-title">
+                <h3 class="title" style="width: fit-content; font-size: 20px;">Registrarse</h3>
+
+                <label for="txtRegisterNombre">Nombre completo</label>
+                <input type="text" id="txtRegisterNombre" class="nes-input" required>
+
+                <label for="txtRegisterEmail">Email</label>
+                <input type="email" id="txtRegisterEmail" class="nes-input" required>
+
+                <label for="txtRegisterContrasena">Contraseña</label>
+                <input type="password" id="txtRegisterContrasena" class="nes-input" required minlength="8">
+
+                <button id="btnRegistrarse" class="nes-btn" onmouseover="hoverSound.currentTime = 0, hoverSound.play()"
+                    onclick="menuSound.play()">Registrarse</button>
+                <a href="#" id="registrarse" onclick="aLogin()">Volver</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Diálogo de alerta personalizado -->
+    <dialog class="nes-dialog " id="alertDialog">
+        <form method="dialog" style="align-items: center;
+            display: flex;
+            flex-direction: column;
+            ">
+            <p class="title"></p>
+            <p id="alertMessage"></p>
+            <menu class="dialog-menu" style="margin: auto; padding: 0;">
+                <button id="btnAlerta" class="nes-btn">Aceptar</button>
+            </menu>
+        </form>
+    </dialog>
+
+    <script src="../js/login.js" defer></script>
+    <script src="../js/audioController.js" defer></script>
+</body>
+
+</html>

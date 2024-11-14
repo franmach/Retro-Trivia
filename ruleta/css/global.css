@@ -1,0 +1,63 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* Estilos del Body */
+body {
+    background-color: #ffffff !important;
+    background-image: url("../images/gameboy.png"); /* Fondo con imagen de Game Boy */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Press Start 2P', cursive;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    overflow: hidden; /* Evita scroll en la ventana */
+}
+
+/* Contenedor principal que actúa como la pantalla visible */
+.gameboy-container {
+    width: 65%; /* Ajusta para que encaje en el área transparente de la Game Boy */
+    height: 80%; /* Ajusta para que encaje en el área transparente de la Game Boy */
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+
+/* Ajustes específicos de NES.css */
+.nes-container {
+    position: unset !important; 
+}
+
+.nes-container.with-title > .title {
+    background-color: #fff !important;
+}
+
+.nes-input, .nes-textarea, .nes-btn {
+    border-image-repeat: stretch !important; 
+}
+
+.nes-input {
+    font-size: 15px !important;
+}
+
+label {
+    margin: 20px;
+    font-size: 15px;
+}
+
+/*ESTILOS AGREGADOS POR LEO PARA PAGINA PREGUNTA*/
+.menuBtn:focus {
+    outline: none;
+}
+

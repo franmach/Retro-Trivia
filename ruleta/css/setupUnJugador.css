@@ -1,0 +1,106 @@
+/* Configuración general del contenedor */
+body{
+    font-family: 'Press Start 2P', sans-serif;
+    color: #000000;
+    display: flex;
+    margin: 0;
+}
+
+
+.game-setup-container {
+    display: flex;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+    flex-direction: column;
+}
+
+p {
+    font-size: 16px !important;
+    margin-bottom: 8px;
+    color: #000000;
+    text-align: center;
+}
+.nes-radio:checked+span::before{
+    color: #645096;
+}
+.nes-text {
+    font-size: 14px;
+    color: #000000;
+}
+
+/* Sección de Reglas */
+.rules-section {
+    margin: 20px;
+    padding: 10px;
+    
+}
+
+/* Dificultad y Ayudas */
+.difficulty-section, .customization-section {
+    margin: 20px;
+    padding: 10px;
+    outline: none;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+/* Espaciado y alineación de los labels */
+label, li{
+    font-size: 14px;
+    color: #000000;
+    display: block;
+    margin: 6px 0;
+    outline: none;
+
+}
+
+/* Opciones de selección */
+.nes-radio, .nes-checkbox {
+    margin-right: 8px;
+}
+
+/* Opciones de personalización */
+.nes-input, .nes-select select {
+    margin: 10px;
+    font-size: 14px;
+    padding: 6px;
+    color: #000000;
+    border: solid;
+    border-color: black ;
+    outline: none;
+    
+}
+.nes-select{
+    width: 80%;
+}
+
+/* Botón de iniciar partida */
+#startGameBtn {
+    margin-top: 20px;
+    background-color: #493649;
+    color: #fff;
+    padding: 10px 20px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 12px;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 4px #333;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    width: fit-content;
+    align-self: center;
+}
+
+#startGameBtn:hover {
+    background-color: #fff;
+    color: #493649;
+    box-shadow: 0 0 15px #8e777f, 0 0 25px #8e777f;
+}
+
+/* Separación de botones y opciones */
+button, .nes-radio, .nes-checkbox, select {
+    margin-bottom: 8px;
+}

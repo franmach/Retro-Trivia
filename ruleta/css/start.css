@@ -1,0 +1,33 @@
+.centered-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    text-align: center;
+}
+
+/* Estilos de texto animado "Press Start" */
+#pressStartText {
+    font-size: 30px;
+    color: #3a2769;
+    animation: blink 1s step-end infinite;
+}
+
+#pressStartText:hover {
+    font-size: 35px;
+    text-shadow: 0 0 2px #3a2769;
+    color: #645096;
+    border-radius: 15px;
+    animation: none;
+}
+
+/* Animación de parpadeo */
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+#startScreen img,p{
+    margin: 50px;
+}
