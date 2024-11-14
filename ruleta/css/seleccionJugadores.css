@@ -1,0 +1,33 @@
+/* Estilo de los botones de selección de jugadores */
+.playersBtn {
+    font-size: 24px;
+    color: #3a2769;
+    font-family: 'Press Start 2P', cursive;
+    background-color: transparent;
+    border: 2px solid transparent;
+    border-radius: 15px;
+    margin: 20px;
+    padding: 10px 20px;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.playersBtn:hover {
+    font-size: 30px;
+    color: #645096;
+    text-shadow: 0 0 10px #fff;
+}
+
+.centered-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
+    text-align: center;
+}
+p {
+    font-size: 16px !important;
+    margin-bottom: 8px;
+    color: #000000;
+    text-align: center;
+}

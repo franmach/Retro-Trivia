@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../node_modules/nes.css/css/nes.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/global.css"> <!-- Si deseas agregar estilos personalizados -->
+    <link rel="stylesheet" href="../css/setupUnJugador.css"> <!-- Si deseas agregar estilos personalizados -->
+
+
+
+</head>
+
+<body>
+    <div class="gameboy-container">
+        <div class="game-setup-container">
+
+            <!-- Sección de Reglas -->
+            <div class="rules-section nes-container with-title is-centered ">
+                <p class="title">Reglas del Juego</p>
+                <ul class="nes-list is-disc">
+                    <li>Responde tantas preguntas como puedas en el tiempo límite.</li>
+                    <li>Obtén puntos por cada respuesta correcta.</li>
+                </ul>
+            </div>
+
+            <!-- Selección de Dificultad -->
+            <section class="difficulty-section nes-container with-title is-centered">
+                <p class="title">Dificultad</p>
+                <label><input type="radio" class="nes-radio" name="dificultad" value="easy"> <span
+                        class="nes-text">Fácil</span></label><br>
+                <label><input type="radio" class="nes-radio" name="dificultad" value="medium"> <span
+                        class="nes-text">Intermedio</span></label><br>
+                <label><input type="radio" class="nes-radio" name="dificultad" value="hard"> <span
+                        class="nes-text">Difícil</span></label>
+            </section>
+
+
+            <!-- Personalización de la Partida -->
+            <section class="customization-section nes-container with-title is-centered">
+                <p class="title">Personalización de la partida</p>
+
+                <label for="default_select">Tiempo por ronda</label>
+                <div class="nes-select">
+                  <select required id="selectTiempo">
+                    <option value="" disabled selected hidden>Seleccionar...</option>
+                    <option value="0">30</option>
+                    <option value="1">45</option>
+                    <option value="2">60</option>
+
+                  </select>
+                </div>
+
+
+            </section>
+
+            <!-- Botón para Comenzar -->
+            <button id="startGameBtn" class="menuBtn">Iniciar Partida</button>
+        </div>
+    </div>
+     <!-- Diálogo de alerta personalizado -->
+     <dialog class="nes-dialog " id="alertDialog">
+        <form method="dialog" style="align-items: center;
+            display: flex;
+            flex-direction: column;
+            ">
+            <p class="title"></p>
+            <p id="alertMessage"></p>
+            <menu class="dialog-menu" style="margin: auto; padding: 0;">
+                <button id="btnAlerta" class="nes-btn">Aceptar</button>
+            </menu>
+        </form>
+    </dialog>
+    <audio id="musica" src="../audio/music.mp3"></audio>
+
+    <script src="../js/setupUnJugador.js"></script>
+</body>
+
+</html>

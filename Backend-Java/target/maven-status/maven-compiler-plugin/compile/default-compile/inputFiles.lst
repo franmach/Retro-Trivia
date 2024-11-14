@@ -1,17 +1,17 @@
-C:\Users\menge\OneDrive\Documentos\ANALISTA PROGRAMADOR\4to semestre\Proyecto1\Proyecto-DDA-IS\Backend-Java\src\main\java\model\Respuesta.java
-C:\Users\menge\OneDrive\Documentos\ANALISTA PROGRAMADOR\4to semestre\Proyecto1\Proyecto-DDA-IS\Backend-Java\src\main\java\model\Resultado.java
-C:\Users\menge\OneDrive\Documentos\ANALISTA PROGRAMADOR\4to semestre\Proyecto1\Proyecto-DDA-IS\Backend-Java\src\main\java\model\Pregunta.java
-C:\Users\menge\OneDrive\Documentos\ANALISTA PROGRAMADOR\4to semestre\Proyecto1\Proyecto-DDA-IS\Backend-Java\src\main\java\model\Ranking.java
-C:\Users\menge\OneDrive\Documentos\ANALISTA PROGRAMADOR\4to semestre\Proyecto1\Proyecto-DDA-IS\Backend-Java\src\main\java\model\ConfiguracionDelJuego.java
-C:\Users\menge\OneDrive\Documentos\ANALISTA PROGRAMADOR\4to semestre\Proyecto1\Proyecto-DDA-IS\Backend-Java\src\main\java\model\Partida.java
-C:\Users\menge\OneDrive\Documentos\ANALISTA PROGRAMADOR\4to semestre\Proyecto1\Proyecto-DDA-IS\Backend-Java\src\main\java\model\Categoria.java
-C:\Users\menge\OneDrive\Documentos\ANALISTA PROGRAMADOR\4to semestre\Proyecto1\Proyecto-DDA-IS\Backend-Java\src\main\java\model\Multijugador.java
-C:\Users\menge\OneDrive\Documentos\ANALISTA PROGRAMADOR\4to semestre\Proyecto1\Proyecto-DDA-IS\Backend-Java\src\main\java\model\Estadisticas.java
-C:\Users\menge\OneDrive\Documentos\ANALISTA PROGRAMADOR\4to semestre\Proyecto1\Proyecto-DDA-IS\Backend-Java\src\main\java\model\Jugador.java
-C:\Users\menge\OneDrive\Documentos\ANALISTA PROGRAMADOR\4to semestre\Proyecto1\Proyecto-DDA-IS\Backend-Java\src\main\java\controller\PreguntaController.java
-C:\Users\menge\OneDrive\Documentos\ANALISTA PROGRAMADOR\4to semestre\Proyecto1\Proyecto-DDA-IS\Backend-Java\src\main\java\configuration\RestTemplateConfig.java
-C:\Users\menge\OneDrive\Documentos\ANALISTA PROGRAMADOR\4to semestre\Proyecto1\Proyecto-DDA-IS\Backend-Java\src\main\java\configuration\WebConfig.java
-C:\Users\menge\OneDrive\Documentos\ANALISTA PROGRAMADOR\4to semestre\Proyecto1\Proyecto-DDA-IS\Backend-Java\src\main\java\model\SistemaAutenticacion.java
-C:\Users\menge\OneDrive\Documentos\ANALISTA PROGRAMADOR\4to semestre\Proyecto1\Proyecto-DDA-IS\Backend-Java\src\main\java\model\Cronometro.java
-C:\Users\menge\OneDrive\Documentos\ANALISTA PROGRAMADOR\4to semestre\Proyecto1\Proyecto-DDA-IS\Backend-Java\src\main\java\model\ApiManager.java
-C:\Users\menge\OneDrive\Documentos\ANALISTA PROGRAMADOR\4to semestre\Proyecto1\Proyecto-DDA-IS\Backend-Java\src\main\java\com\example\BasicApplication.java
+C:\Users\USUARIO\OneDrive\Escritorio\Analista Programador\Proyecto-DDA-IS\Backend-Java\src\main\java\model\Categoria.java
+C:\Users\USUARIO\OneDrive\Escritorio\Analista Programador\Proyecto-DDA-IS\Backend-Java\src\main\java\configuration\WebConfig.java
+C:\Users\USUARIO\OneDrive\Escritorio\Analista Programador\Proyecto-DDA-IS\Backend-Java\src\main\java\model\ConfiguracionDelJuego.java
+C:\Users\USUARIO\OneDrive\Escritorio\Analista Programador\Proyecto-DDA-IS\Backend-Java\src\main\java\model\Estadisticas.java
+C:\Users\USUARIO\OneDrive\Escritorio\Analista Programador\Proyecto-DDA-IS\Backend-Java\src\main\java\configuration\RestTemplateConfig.java
+C:\Users\USUARIO\OneDrive\Escritorio\Analista Programador\Proyecto-DDA-IS\Backend-Java\src\main\java\model\Ranking.java
+C:\Users\USUARIO\OneDrive\Escritorio\Analista Programador\Proyecto-DDA-IS\Backend-Java\src\main\java\model\Pregunta.java
+C:\Users\USUARIO\OneDrive\Escritorio\Analista Programador\Proyecto-DDA-IS\Backend-Java\src\main\java\model\Resultado.java
+C:\Users\USUARIO\OneDrive\Escritorio\Analista Programador\Proyecto-DDA-IS\Backend-Java\src\main\java\controller\PreguntaController.java
+C:\Users\USUARIO\OneDrive\Escritorio\Analista Programador\Proyecto-DDA-IS\Backend-Java\src\main\java\model\Respuesta.java
+C:\Users\USUARIO\OneDrive\Escritorio\Analista Programador\Proyecto-DDA-IS\Backend-Java\src\main\java\model\Jugador.java
+C:\Users\USUARIO\OneDrive\Escritorio\Analista Programador\Proyecto-DDA-IS\Backend-Java\src\main\java\model\ApiManager.java
+C:\Users\USUARIO\OneDrive\Escritorio\Analista Programador\Proyecto-DDA-IS\Backend-Java\src\main\java\model\Cronometro.java
+C:\Users\USUARIO\OneDrive\Escritorio\Analista Programador\Proyecto-DDA-IS\Backend-Java\src\main\java\model\SistemaAutenticacion.java
+C:\Users\USUARIO\OneDrive\Escritorio\Analista Programador\Proyecto-DDA-IS\Backend-Java\src\main\java\model\Partida.java
+C:\Users\USUARIO\OneDrive\Escritorio\Analista Programador\Proyecto-DDA-IS\Backend-Java\src\main\java\model\Multijugador.java
+C:\Users\USUARIO\OneDrive\Escritorio\Analista Programador\Proyecto-DDA-IS\Backend-Java\src\main\java\com\example\BasicApplication.java

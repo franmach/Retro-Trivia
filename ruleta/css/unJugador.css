@@ -1,0 +1,88 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    width: 100%;
+    padding: 20px;
+    position: relative;
+}
+/* Posición del GIF en la parte inferior izquierda */
+.gif {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.gif-img {
+    width: 300px;
+    margin-top: 10px;
+}
+
+
+/* Configuración específica de ruleta */
+.wheel-section {
+    grid-column: 2 / 3; /* Columna del medio */
+    grid-row: 1 / 4; /* Ocupar las tres filas */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Estilo de la ruleta */
+#wheelCtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+canvas {
+    background-color: #493649;
+    border-radius: 150px;
+    box-shadow: 0 0 15px #8e777f, 0 0 25px #8e777f;
+}
+
+/* Estilo de los botones del menú */
+.spinBtn {
+    margin-top: 20px;
+    background-color: #493649;
+    color: #fff;
+    padding: 10px 20px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 0 4px #333;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+}
+
+.spinBtn:hover {
+    background-color: #fff;
+    color: #493649;
+    box-shadow: 0 0 15px #8e777f, 0 0 25px #8e777f;
+}
+
+
+
+/* Estilo del resultado */
+#resultEl {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Press Start 2P', cursive;
+    color: #00FF41;
+}
+
+/* Estilo de flecha */
+#arrowEl {
+    margin-bottom: 10px;
+    font-size: 50px;
+    color: #FF6B6B;
+    text-shadow: 0 0 10px #FF6B6B, 0 0 20px #FF6B6B;
+}
