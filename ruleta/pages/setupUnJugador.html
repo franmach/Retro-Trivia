@@ -29,11 +29,11 @@
             <section class="difficulty-section nes-container with-title is-centered">
                 <p class="title">Dificultad</p>
                 <label><input type="radio" class="nes-radio" name="dificultad" value="easy"> <span
-                        class="nes-text">Fácil</span></label><br>
+                        class="nes-text menuBtn">Fácil</span></label><br>
                 <label><input type="radio" class="nes-radio" name="dificultad" value="medium"> <span
-                        class="nes-text">Intermedio</span></label><br>
+                        class="nes-text menuBtn">Intermedio</span></label><br>
                 <label><input type="radio" class="nes-radio" name="dificultad" value="hard"> <span
-                        class="nes-text">Difícil</span></label>
+                        class="nes-text menuBtn">Difícil</span></label>
             </section>
 
 
@@ -42,7 +42,7 @@
                 <p class="title">Personalización de la partida</p>
 
                 <label for="default_select">Tiempo por ronda</label>
-                <div class="nes-select">
+                <div class="nes-select menuBtn">
                   <select required id="selectTiempo">
                     <option value="" disabled selected hidden>Seleccionar...</option>
                     <option value="0">30</option>
@@ -56,7 +56,7 @@
             </section>
 
             <!-- Botón para Comenzar -->
-            <button id="startGameBtn" class="menuBtn">Iniciar Partida</button>
+            <button id="startGameBtn" class="menuBtn nes-btn">Iniciar Partida</button>
         </div>
     </div>
      <!-- Diálogo de alerta personalizado -->
@@ -68,12 +68,11 @@
             <p class="title"></p>
             <p id="alertMessage"></p>
             <menu class="dialog-menu" style="margin: auto; padding: 0;">
-                <button id="btnAlerta" class="nes-btn">Aceptar</button>
+                <button id="btnAlerta" class="nes-btn menuBtn">Aceptar</button>
             </menu>
         </form>
     </dialog>
-    <audio id="musica" src="../audio/music.mp3"></audio>
-
+    <script src="../js/audioController.js" defer></script>
     <script src="../js/setupUnJugador.js"></script>
 </body>
 

@@ -1,34 +1,90 @@
 document.addEventListener('DOMContentLoaded', async function () {
     const categoriaElement = document.getElementById('categoria');
+    const iconoCategoria = document.getElementById('iconoCategoria');
     const preguntaTextoElement = document.getElementById('preguntaTexto');
     const opcionesContainer = document.getElementById('opciones');
     const typingSound = document.getElementById('typingSound');
-    const preguntaContainer = document.querySelector('.pregunta');//para cambiarle el fondo
+    const preguntaContainer = document.querySelector('.pregunta');
     const colorPregunta = document.querySelector('.dialog-text p');
     const colorOpciones = document.querySelectorAll('#opciones button');
+    const colorFooter = document.querySelectorAll('.textoFooter');
     const typingSpeed = 50;
     let index = 0;
     let preguntaSoloTexto = "";
 
-    // Mapear las categorías a sus imágenes de fondo
-    const backgroundImages = {
-        Geografia: '../images/fondoGeo.png',
-        Arte: '../images/fondoA.png',
-        Ciencia: '../images/fondoCie.png',
-        Deportes: '../images/fondoD.png',
-        Entretenimiento: '../images/fondoE.png',
-        Corona: '../images/fondo.png'
+    // Configuración de estilos para categorías
+    const categoryConfig = {
+        Geografia: {
+            textColor: '#2e77b8',
+            buttonBackground: '#2e77b8',
+            footerColor: '#2e77b8',
+            backgroundImage: '../images/fondoGeo.png',
+            icon: '../images/earth.png'
+        },
+        Arte: {
+            textColor: '#fff',
+            buttonBackground: '#051baf',
+            footerColor: '#fff',
+            backgroundImage: '../images/fondoA.png',
+            icon: '../images/arte.png'
+        },
+        Ciencia: {
+            textColor: 'white',
+            buttonBackground: 'black',
+            footerColor: 'white',
+            backgroundImage: '../images/fondoCie.png',
+            icon: '../images/ciencia.png'
+        },
+        Deportes: {
+            textColor: '#fff',
+            buttonBackground: '#ff5c01',
+            footerColor: '#ff5c01',
+            backgroundImage: '../images/fondoD.png',
+            icon: '../images/deporte.png'
+        },
+        Entretenimiento: {
+            textColor: '#cf321f',
+            buttonBackground: '#cf321f',
+            footerColor: '#fff',
+            backgroundImage: '../images/fondoE.png',
+            icon: '../images/pop.png'
+        },
+        Corona: {
+            textColor: '#d4af37',
+            buttonBackground: '#d4af37',
+            footerColor: '#d4af37',
+            backgroundImage: '../images/fondo.png',
+            icon: '../images/crown.png'
+        }
     };
 
-    // Colores específicos para botones preguntas y opciones según la categoría
-    const categoriaColores = {
-        Entretenimiento: '#cf321f',
-        Arte: '#051baf',
-        Geografia: '#2e77b8',
-        Deportes: '#ff5c01',
-        Ciencia: 'black',
-        Corona: '#d4af37'
-    };
+    // Función para aplicar estilos según la categoría
+    function applyCategoryStyles(category) {
+        const config = categoryConfig[category];
+
+        if (!config) {
+            console.warn(`No se encontró configuración para la categoría: ${category}`);
+            return;
+        }
+
+        // Cambiar el fondo de la pregunta
+        preguntaContainer.style.backgroundImage = `url('${config.backgroundImage}')`;
+
+        // Cambiar el icono de la categoría
+        iconoCategoria.src = config.icon;
+
+        // Cambiar el color del texto de la pregunta
+        colorPregunta.style.color = config.textColor;
+
+        // Cambiar el color de fondo de los botones de opciones
+        colorOpciones.forEach(button => {
+            button.style.backgroundColor = config.buttonBackground;
+        });
+
+        // Cambiar el color del footer
+        colorFooter.forEach(element => {
+            element.style.color = config.footerColor;
+        });    }
 
     try {
         // Obtener la categoría seleccionada del localStorage
@@ -40,37 +96,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             return;
         }
 
-        categoriaElement.textContent = `Categoría: ${categoriaSeleccionada}`;
-
-
-
-        // Cambiar el fondo del contenedor según la categoría seleccionada
-        if (backgroundImages[categoriaSeleccionada]) {
-            preguntaContainer.style.backgroundImage = `url('${backgroundImages[categoriaSeleccionada]}')`;
-        } else {
-            preguntaContainer.style.backgroundImage = ''; // Fondo por defecto si la categoría no está en el objeto
-        }
-
-        if (categoriaColores[categoriaSeleccionada]) {
-            switch (categoriaSeleccionada) {
-                case 'Ciencia':
-                    colorPregunta.style.color = 'white';
-                     break;
-                case 'Entretenimiento':
-                    colorPregunta.style.color = '#cf321f';
-                    break;
-                case 'Corona':
-                    colorPregunta.style.color = 'black';
-                    break;
-                
-              
-
-            }
-            // Aplicar color de fondo a cada botón en #opciones
-            colorOpciones.forEach(button => {
-                button.style.backgroundColor = categoriaColores[categoriaSeleccionada];
-            });
-        }
+        categoriaElement.textContent = `${categoriaSeleccionada}`;
+        applyCategoryStyles(categoriaSeleccionada);
 
         // Realizar la solicitud al backend
         const response = await fetch(`https://localhost:8080/api/pregunta?categoria=${encodeURIComponent(categoriaSeleccionada)}`);
@@ -99,8 +126,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     } catch (error) {
         console.error('Error al obtener la pregunta:', error);
-        var msg = "Hubo un error al cargar la pregunta.";
-        preguntaTextoElement.textContent = startTextAnimation(msg);
+        const msg = "Hubo un error al cargar la pregunta.";
+        preguntaTextoElement.textContent = msg;
     }
 
     // Función para iniciar la animación de texto
@@ -119,7 +146,40 @@ document.addEventListener('DOMContentLoaded', async function () {
             setTimeout(() => typeDialog(text), typingSpeed);
         } else {
             typingSound.pause();
+            startTimer(30, () => {
+                showAlert("¡Se acabó el tiempo!");
+
+            });
+    
         }
     }
+    // Función para manejar el temporizador
+    function startTimer(duration, onTimerEnd) {
+        const timerElement = document.getElementById('timer');
+        let timeRemaining = duration;
 
+        // Actualiza el texto inicial
+        timerElement.textContent = timeRemaining;
+
+        const intervalId = setInterval(() => {
+            timeRemaining--;
+
+            if (timeRemaining <= 0) {
+                clearInterval(intervalId); // Detiene el temporizador
+                timerElement.textContent = "0";
+                if (typeof onTimerEnd === 'function') {
+                    onTimerEnd();
+                }
+            } else {
+                timerElement.textContent = timeRemaining;
+            }
+        }, 1000);
+    }
+
+    function showAlert(message) {
+        const alertDialog = document.getElementById('alertDialog');
+        document.getElementById('alertMessage').textContent = message; // Establece el mensaje
+        alertDialog.showModal(); // Muestra el diálogo
+
+    }
 });

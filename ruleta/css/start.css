@@ -1,11 +1,4 @@
-.centered-screen {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 100%;
-    text-align: center;
-}
+
 
 /* Estilos de texto animado "Press Start" */
 #pressStartText {
