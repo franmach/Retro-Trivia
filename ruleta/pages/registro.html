@@ -17,7 +17,13 @@
 <body>
     <div class="gameboy-container">
         <!-- Pantalla de Registro (oculta por defecto) -->
-        <div id="registerScreen" class="hidden">
+        <div id="registerScreen">
+
+            <div class="grid-item gif host">
+                <img src="../images/spk2Register.gif" id="spkHost"  class="gif-img" >
+                <img src="../images/host2.gif" id="host" class="gif-img" >
+            </div>
+
             <div class="loginForm nes-container with-title">
                 <h3 class="title" style="width: fit-content; font-size: 20px;">Registrarse</h3>
 
@@ -51,7 +57,7 @@
         </form>
     </dialog>
 
-    <script src="../js/login.js" defer></script>
+    <script src="../js/registro.js" defer></script>
     <script src="../js/audioController.js" defer></script>
 </body>
 

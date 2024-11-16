@@ -1,4 +1,7 @@
+
 document.addEventListener('DOMContentLoaded', () => {
+
+
 
     document.getElementById('onePlayerBtn').addEventListener('click', () => {
         window.location.href = 'setupUnJugador.html';

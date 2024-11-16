@@ -24,10 +24,6 @@ p {
 .nes-radio:checked+span::before{
     color: #645096;
 }
-.nes-text {
-    font-size: 14px;
-    color: #000000;
-}
 
 /* Sección de Reglas */
 .rules-section {
@@ -76,31 +72,23 @@ label, li{
     width: 80%;
 }
 
-/* Botón de iniciar partida */
-#startGameBtn {
-    margin-top: 20px;
-    background-color: #493649;
-    color: #fff;
-    padding: 10px 20px;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 12px;
-    border: none;
-    cursor: pointer;
-    text-transform: uppercase;
-    box-shadow: 0 4px #333;
-    transition: all 0.3s ease;
-    border-radius: 5px;
-    width: fit-content;
-    align-self: center;
-}
 
-#startGameBtn:hover {
-    background-color: #fff;
-    color: #493649;
-    box-shadow: 0 0 15px #8e777f, 0 0 25px #8e777f;
-}
 
 /* Separación de botones y opciones */
 button, .nes-radio, .nes-checkbox, select {
     margin-bottom: 8px;
+}
+#btnAlerta, #startGameBtn{
+    font-size: 15px;
+    align-self: center;
+    width: fit-content;
+    color: white;
+    padding: 10px;
+    background-color: #493649; 
+}
+#btnAlerta:hover, #startGameBtn:hover{
+
+    background-color: #8e777f;
+    color: #493649;
+    box-shadow: 0 0 15px #493649, 0 0 25px #493649;
 }

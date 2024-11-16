@@ -13,22 +13,22 @@
         <div id="gameScreen" class="grid-container">
             <!-- GIF en la parte inferior izquierda -->
             <div class="grid-item gif host">
-                <img src="../images/spkHost.gif" class="gif-img" >
+                <img src="../images/spkGame.gif" id="spkHost" class="gif-img" >
                 <img src="../images/host2.gif" class="gif-img" >
             </div>
     
             <!-- Ruleta y botones en la columna del medio -->
             <div class="grid-item wheel-section">
                 <div id="arrowEl"><img src="../images/arrow.png" style="width: 50px;"></div>
-                <canvas id="wheelCanvas" width="300" height="300"></canvas>
-                <button id="spinBtn" class="spinBtn menuBtn">¡GIRAR LA RUEDA!</button>
+                <canvas id="wheelCanvas" width="400" height="400"></canvas>
+                <button id="spinBtn" class="nes-btn menuBtn ">¡GIRAR LA RUEDA!</button>
                 <div id="resultEl"></div>
-                <button id="backBtn" class="nes-btn is-warning menuBtn">ATRAS</button>
+                <button id="backBtn" class="menuBtn  backBtn">ATRAS</button>
             </div>
         </div>
     </div>
     <audio id="spinSound" src="../audio/spin.mp3"></audio>
-    <script src="../js/juego.js" defer></script>
+    <script src="../js/unJugador.js" type="module"></script>
     <script src="../js/audioController.js" defer></script>
 </body>
 </html>
