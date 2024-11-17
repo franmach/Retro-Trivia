@@ -31,6 +31,8 @@ const ruleta = new Ruleta(
    
 
     document.addEventListener('DOMContentLoaded', () => {
+        
+    
         const imagenHost = document.getElementById('spkHost');
         const hoverButton = document.getElementById('spinBtn');
         const imagenOriginal = '../images/spkGame.gif';

@@ -3,24 +3,10 @@
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
     width: 100%;
-    padding: 20px;
     position: relative;
 }
 
-/* Posición del GIF en la parte inferior izquierda */
-.gif {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
 
-.gif-img {
-    width: 300px;
-}
 
 .wheel-section {
     grid-column: 2 / 3;
@@ -69,5 +55,28 @@ canvas {
     color: #493649;
 }
 
+
+
+.data-section{
+    grid-row: 1/4;
+    grid-column: 3/3;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+.puntaje ,  .nombreU ,  .tiempo , .dificultad{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#icon{
+    width: 30px;
+    margin-bottom: 0;
+    margin-right: 0;
+}
+label{
+    margin-bottom: 20px !important;
+}
 
 

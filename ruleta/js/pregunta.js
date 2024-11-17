@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Configuración de estilos para categorías
     const categoryConfig = {
         Geografia: {
-            textColor: '#2e77b8',
+            textColor: '#fff',
             buttonBackground: '#2e77b8',
             footerColor: '#2e77b8',
             backgroundImage: '../images/fondoGeo.png',
