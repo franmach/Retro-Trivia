@@ -1,6 +1,7 @@
+controller\PartidaController.class
 controller\PreguntaController.class
 model\Multijugador.class
-model\ConfiguracionDelJuego.class
+model\ConfiguracionPartida.class
 model\Partida.class
 model\Estadisticas.class
 model\Categoria.class
