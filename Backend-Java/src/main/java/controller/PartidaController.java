@@ -55,7 +55,6 @@ public class PartidaController {
 
         // Llamar al API Manager para generar una nueva pregunta de la categoría seleccionada
         Pregunta nuevaPregunta = apiManager.generarPregunta(categoria);
-        partida.setCategoriaActual(categoria);
         return ResponseEntity.ok(nuevaPregunta);
     }
 

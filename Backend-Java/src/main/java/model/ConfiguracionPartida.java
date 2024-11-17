@@ -11,6 +11,11 @@ package model;
 public class ConfiguracionPartida {
     private String dificultad;
     private int tiempoPorPregunta;
+    
+    public ConfiguracionPartida (String dificultad, int tiempo) {
+        this.dificultad = dificultad;
+        this.tiempoPorPregunta = tiempo;
+    }
 
     // Getters y Setters
     public String getDificultad() { return dificultad; }

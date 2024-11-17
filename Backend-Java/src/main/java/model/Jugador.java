@@ -14,13 +14,11 @@ public class Jugador {
     private String nombre;
     private String correo;
     private String contraseña;
-    private List<Resultado> historicoResultados; // Histórico de resultados por partida
-
+    
     public Jugador(String nombre, String correo, String contraseña) {
         this.nombre = nombre;
         this.correo = correo;
         this.contraseña = contraseña;
-        this.historicoResultados = new ArrayList<>();
     }
 
     public Jugador() {
