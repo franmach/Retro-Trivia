@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const colorPregunta = document.querySelector('.dialog-text p');
     const colorOpciones = document.querySelectorAll('#opciones button');
     const colorFooter = document.querySelectorAll('.textoFooter');
+    const partidaInfoContainer = document.getElementById('partidaInfo');
     const typingSpeed = 50;
     let index = 0;
     let preguntaSoloTexto = "";
@@ -84,45 +85,85 @@ document.addEventListener('DOMContentLoaded', async function () {
         // Cambiar el color del footer
         colorFooter.forEach(element => {
             element.style.color = config.footerColor;
-        });    }
+        });
+    }
 
     try {
-        // Obtener la categoría seleccionada del localStorage
-        const categoriaSeleccionada = localStorage.getItem('categoriaSeleccionada');
+        // Obtener la pregunta actual del localStorage
+        const preguntaActual = JSON.parse(localStorage.getItem('preguntaActual'));
+        console.log("Pregunta actual cargada desde localStorage:", preguntaActual);
 
-        if (!categoriaSeleccionada) {
-            console.error("Error: No se encontró ninguna categoría seleccionada en el localStorage.");
-            categoriaElement.textContent = "Error: No se seleccionó ninguna categoría.";
+        if (!preguntaActual || !preguntaActual.enunciado || !preguntaActual.opcionesDeRespuesta) {
+            alert('No se encontró una pregunta válida. Por favor, regresa a la ruleta.');
+            window.location.href = 'unJugador.html';
             return;
         }
 
-        categoriaElement.textContent = `${categoriaSeleccionada}`;
-        applyCategoryStyles(categoriaSeleccionada);
+        console.log("Datos recibidos del backend:", preguntaActual);
 
-        // Realizar la solicitud al backend
-        const response = await fetch(`https://localhost:8080/api/pregunta?categoria=${encodeURIComponent(categoriaSeleccionada)}`);
+        // Mostrar la pregunta y las opciones
+        categoriaElement.textContent = `Categoría: ${preguntaActual.categoria}`;
+        applyCategoryStyles(preguntaActual.categoria);
 
-        if (!response.ok) {
-            throw new Error(`Error en la solicitud al backend: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        console.log("Datos recibidos del backend:", data);
-
-        // Preparar el texto de la pregunta para animación
-        const enunciadoCompleto = data.enunciado || "No se pudo obtener la pregunta.";
-        preguntaSoloTexto = enunciadoCompleto.split('?')[0] + '?';
-
-        // Iniciar animación de la pregunta en el diálogo
+        preguntaCompleta = preguntaActual.enunciado;
+        preguntaSoloTexto = preguntaCompleta.split('?')[0] + '?';
         startTextAnimation(preguntaSoloTexto);
 
         // Mostrar las opciones de respuesta
-        data.opcionesDeRespuesta.forEach((opcion, index) => {
+        preguntaActual.opcionesDeRespuesta.forEach((opcion, index) => {
             const opcionElement = document.getElementById(`opcion${index + 1}`);
             if (opcionElement) {
                 opcionElement.textContent = opcion;
+                opcionElement.addEventListener('click', async () => {
+                    try {
+                        // Determinar la letra correspondiente a la opción elegida
+                        const letraOpcionElegida = String.fromCharCode(65 + index); // A, B, C, D según el índice
+
+                        // Crear el objeto Respuesta
+                        const respuesta = {
+                            preguntaAsociada: {
+                                enunciado: preguntaActual.enunciado,
+                                respuestaCorrecta: preguntaActual.respuestaCorrecta
+                            },
+                            opcionElegida: letraOpcionElegida,
+                            tiempoTranscurrido: obtenerTiempoTranscurrido(), // Obtener el tiempo transcurrido de alguna manera
+                            jugador: { nombre: "Jugador1" } // Datos básicos del jugador
+                        };
+
+                        console.log("Datos de la respuesta a enviar:", respuesta);
+
+                        // Realizar la solicitud POST al backend para registrar la respuesta
+                        const response = await fetch('https://localhost:8080/api/registrarRespuesta', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(respuesta)
+                        });
+
+                        const mensaje = await response.text();
+                        alert(mensaje);
+
+                        // Dependiendo de la respuesta, redirigir al jugador
+                        if (mensaje.includes("correcta")) {
+                            window.location.href = 'unJugador.html';
+                        } else {
+                            alert('Partida Finalizada. Gracias por jugar.');
+                            window.location.href = 'index.html';
+                        }
+                    } catch (error) {
+                        console.error('Error al registrar la respuesta:', error);
+                        alert('Hubo un error al registrar la respuesta. Por favor, inténtalo nuevamente.');
+                    }
+                });
             }
         });
+
+        // Actualizar la información de la partida si el contenedor está presente en la página
+        //NO HA FUNCIONADO
+        if (partidaInfoContainer) {
+            actualizarInformacionPartida();
+        }
 
     } catch (error) {
         console.error('Error al obtener la pregunta:', error);
@@ -130,15 +171,14 @@ document.addEventListener('DOMContentLoaded', async function () {
         preguntaTextoElement.textContent = msg;
     }
 
-    // Función para iniciar la animación de texto
+    // Funciones auxiliares
     function startTextAnimation(text) {
         index = 0;
-        preguntaTextoElement.innerHTML = ""; // Limpiar el texto antes de iniciar
+        preguntaTextoElement.innerHTML = "";
         typingSound.play();
         typeDialog(text);
     }
 
-    // Animación de escritura para el diálogo
     function typeDialog(text) {
         if (index < text.length) {
             preguntaTextoElement.innerHTML += text[index];
@@ -148,24 +188,25 @@ document.addEventListener('DOMContentLoaded', async function () {
             typingSound.pause();
             startTimer(30, () => {
                 showAlert("¡Se acabó el tiempo!");
-
             });
-    
         }
     }
-    // Función para manejar el temporizador
+
     function startTimer(duration, onTimerEnd) {
         const timerElement = document.getElementById('timer');
+        if (!timerElement) {
+            console.warn("No se encontró el elemento del temporizador (timer). Verifica que el elemento esté presente en el HTML.");
+            return;
+        }
         let timeRemaining = duration;
 
-        // Actualiza el texto inicial
         timerElement.textContent = timeRemaining;
 
         const intervalId = setInterval(() => {
             timeRemaining--;
 
             if (timeRemaining <= 0) {
-                clearInterval(intervalId); // Detiene el temporizador
+                clearInterval(intervalId);
                 timerElement.textContent = "0";
                 if (typeof onTimerEnd === 'function') {
                     onTimerEnd();
@@ -176,10 +217,49 @@ document.addEventListener('DOMContentLoaded', async function () {
         }, 1000);
     }
 
+    function obtenerTiempoTranscurrido() {
+        // Implementar la lógica para obtener el tiempo transcurrido
+        return 10; // Valor estático de prueba
+    }
+
     function showAlert(message) {
         const alertDialog = document.getElementById('alertDialog');
-        document.getElementById('alertMessage').textContent = message; // Establece el mensaje
-        alertDialog.showModal(); // Muestra el diálogo
+        if (!alertDialog) {
+            console.warn("No se encontró el elemento de alerta (alertDialog). Verifica que el elemento esté presente en el HTML.");
+            return;
+        }
+        document.getElementById('alertMessage').textContent = message;
+        alertDialog.showModal();
+    }
 
+    
+    
+    function actualizarInformacionPartida() {
+        const partidaInfoContainer = document.getElementById('partidaInfo');
+        if (!partidaInfoContainer) {
+            console.warn("No se encontró el contenedor de información de la partida (partidaInfo). Verifica que el elemento esté presente en el HTML.");
+        }
+    
+        const jugador = "Jugador1";
+        const dificultad = localStorage.getItem('dificultad') || 'N/A';
+        const respuestasCorrectas = parseInt(localStorage.getItem('respuestasCorrectas') || '0', 10);
+        const puntajeAcumulado = parseInt(localStorage.getItem('puntajeAcumulado') || '0', 10);
+    
+        console.log("Actualizando información de la partida:", { jugador, dificultad, respuestasCorrectas, puntajeAcumulado });
+    
+        // Actualizar el `localStorage` para que esté disponible en la página `unJugador.html`
+        localStorage.setItem('partidaInfo', JSON.stringify({ jugador, dificultad, respuestasCorrectas, puntajeAcumulado }));
+    
+        // Actualizar el cuadro de información de la partida en la página actual si el contenedor está presente
+        if (partidaInfoContainer) {
+            partidaInfoContainer.innerHTML = `
+                <div class="nes-container is-rounded">
+                    <p><strong>Jugador:</strong> ${jugador}</p>
+                    <p><strong>Dificultad:</strong> ${dificultad}</p>
+                    <p><strong>Respuestas Correctas:</strong> ${respuestasCorrectas}</p>
+                    <p><strong>Puntaje Acumulado:</strong> ${puntajeAcumulado}</p>
+                </div>
+            `;
+        }
     }
 });

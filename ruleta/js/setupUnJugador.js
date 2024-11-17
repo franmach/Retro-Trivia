@@ -1,4 +1,4 @@
-document.getElementById("startGameBtn").addEventListener("click", () => {
+document.getElementById("startGameBtn").addEventListener("click", async () => {
 
     function showAlert(message) {
         const alertDialog = document.getElementById('alertDialog');
@@ -20,10 +20,31 @@ document.getElementById("startGameBtn").addEventListener("click", () => {
         return;
     }
 
-    // Guardar configuraciones en localStorage
-    localStorage.setItem("dificultad", dificultad.value);
-    localStorage.setItem("timer", selectTiempo.options[selectTiempo.selectedIndex].text);
+    // Crear el objeto de configuración
+    const configuracion = {
+        dificultad: dificultad.value,
+        tiempoPorPregunta: parseInt(selectTiempo.value)
+    };
 
-    // Redirigir a la página de la ruleta
-    window.location.href = "unJugador.html"; // Asegúrate de que esta ruta sea correcta
+    
+    try {
+        // Realizar la solicitud POST al backend para iniciar la partida
+        const response = await fetch('https://localhost:8080/api/iniciarPartida', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(configuracion)
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al iniciar la partida');
+        }
+
+        // Redirigir a la pantalla de la ruleta si la partida se inició correctamente
+        window.location.href = "unJugador.html";
+    } catch (error) {
+        console.error('Error al iniciar la partida:', error);
+        showAlert("Hubo un error al iniciar la partida. Por favor, inténtalo nuevamente.");
+    }
 });
