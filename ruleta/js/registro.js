@@ -8,7 +8,7 @@ function validateRegister() {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
     if (name.trim() === '') {
-        showAlert('Por favor ingresa tu nombre completo.');
+        showAlert('Por favor ingresa tu nombre de usuario.');
         return false;
     }
 

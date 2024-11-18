@@ -21,12 +21,15 @@ document.getElementById("startGameBtn").addEventListener("click", async () => {
     }
 
     // Crear el objeto de configuración
+    const usuario = JSON.parse(localStorage.getItem('userInfo'));
     const configuracion = {
+        jugador: usuario?.nombre || "Desconocido", // Valor por defecto si no hay usuario
         dificultad: dificultad.value,
-        tiempoPorPregunta: parseInt(selectTiempo.value)
+        tiempoPorPregunta: parseInt(selectTiempo.value),
+    
     };
 
-    
+
     try {
         // Realizar la solicitud POST al backend para iniciar la partida
         const response = await fetch('https://localhost:8080/api/iniciarPartida', {
@@ -41,6 +44,8 @@ document.getElementById("startGameBtn").addEventListener("click", async () => {
             throw new Error('Error al iniciar la partida');
         }
 
+        //guarda el objeto configuracion en el localStorage
+        localStorage.setItem('partidaInfo', JSON.stringify(configuracion));
         // Redirigir a la pantalla de la ruleta si la partida se inició correctamente
         window.location.href = "unJugador.html";
     } catch (error) {

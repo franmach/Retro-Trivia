@@ -18,6 +18,7 @@ const ruleta = new Ruleta(
     async (selectedCategory) => {
         try {
             // Realizar la solicitud GET al backend para generar una nueva pregunta
+            localStorage.setItem('categoriaSeleccionada', selectedCategory.name);
             const response = await fetch(`https://localhost:8080/api/generarPregunta?categoria=${encodeURIComponent(selectedCategory.name)}`);
             if (!response.ok) {
                 throw new Error('Error al generar la pregunta');
@@ -33,7 +34,7 @@ const ruleta = new Ruleta(
             }, 2000);
         } catch (error) {
             console.error('Error al generar la pregunta:', error);
-            alert('Hubo un error al generar la pregunta. Por favor, inténtalo nuevamente.');
+            showAlert('Hubo un error al generar la pregunta. Por favor, inténtalo nuevamente.');
         }
     },
     'spinSound' // ID del audio
@@ -46,6 +47,9 @@ document.getElementById('spinBtn').addEventListener('click', () => {
 
 // Configuración de efectos de hover para el host
 document.addEventListener('DOMContentLoaded', () => {
+
+    actualizarInformacionPartida();
+
     const imagenHost = document.getElementById('spkHost');
     const hoverButton = document.getElementById('spinBtn');
     const imagenOriginal = '../images/spkGame.gif';
@@ -60,6 +64,28 @@ document.addEventListener('DOMContentLoaded', () => {
     hoverButton.addEventListener('mouseout', () => {
         imagenHost.src = imagenOriginal;
     });
+
+
+    // Leer la información de la partida desde `localStorage`
+    function actualizarInformacionPartida() {
+        const partidaInfo = JSON.parse(localStorage.getItem('partidaInfo'));
+
+        if (!partidaInfo) {
+            console.warn("No se encontró información de la partida.");
+            return;
+        }
+
+        const nombreUElement = document.getElementById('nombreU');
+        const dificultadElement = document.getElementById('dificultad');
+        const tiempoElement = document.getElementById('tiempo');
+        const puntajeElement = document.getElementById('puntaje');
+
+        if (nombreUElement) nombreUElement.textContent = partidaInfo.jugador || "Desconocido";
+        if (dificultadElement) dificultadElement.textContent = partidaInfo.dificultad || "No asignada";
+        if (tiempoElement) tiempoElement.textContent = `${partidaInfo.tiempoPorPregunta || 0} segundos`;
+        if (puntajeElement) puntajeElement.textContent = partidaInfo.puntajeAcumulado || 0;
+    }
+
 });
 
 
