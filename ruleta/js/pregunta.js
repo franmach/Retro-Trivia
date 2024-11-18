@@ -9,6 +9,18 @@ document.addEventListener('DOMContentLoaded', async function () {
     const colorOpciones = document.querySelectorAll('#opciones button');
     const colorFooter = document.querySelectorAll('.textoFooter');
     const partidaInfoContainer = document.getElementById('partidaInfo');
+    const partidaInfo = JSON.parse(localStorage.getItem('partidaInfo'));
+
+    if (!localStorage.getItem('partidaInfo')) {
+        localStorage.setItem('partidaInfo', JSON.stringify({
+            jugador: "Jugador1",
+            dificultad: "Fácil",
+            tiempoPorPregunta: 30,
+            puntajeAcumulado: 0
+        }));
+    }
+
+
     const typingSpeed = 50;
     let index = 0;
     let preguntaSoloTexto = "";
@@ -16,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Configuración de estilos para categorías
     const categoryConfig = {
         Geografia: {
-            textColor: '#2e77b8',
+            textColor: '#fff',
             buttonBackground: '#2e77b8',
             footerColor: '#2e77b8',
             backgroundImage: '../images/fondoGeo.png',
@@ -108,76 +120,115 @@ document.addEventListener('DOMContentLoaded', async function () {
         preguntaCompleta = preguntaActual.enunciado;
         preguntaSoloTexto = preguntaCompleta.split('?')[0] + '?';
         startTextAnimation(preguntaSoloTexto);
+        
 
-        // Mostrar las opciones de respuesta
+        async function validarRespuesta(respuesta) {
+            try {
+                const response = await fetch('https://localhost:8080/api/registrarRespuesta', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(respuesta),
+                });
+        
+                const mensaje = await response.text();
+                console.log("Mensaje del servidor:", mensaje);
+        
+                if (mensaje.startsWith("Respuesta correcta")) {
+                    // Extraer el puntaje obtenido
+                    const puntajeObtenido = manejarPuntaje(mensaje);
+        
+                    // Actualizar y guardar en localStorage
+                    partidaInfo.puntajeAcumulado += puntajeObtenido;
+                    localStorage.setItem('partidaInfo', JSON.stringify(partidaInfo));
+                    actualizarInformacionPartida();
+        
+                    // Mostrar alerta y redirigir
+                    showAlert(`¡Respuesta correcta! +${puntajeObtenido} puntos`, () => {
+                        window.location.href = 'unJugador.html';
+                    });
+                } else if (mensaje.startsWith("Respuesta incorrecta")) {
+                    // Eliminar información de la partida y redirigir
+                    showAlert("Respuesta incorrecta. Fin de la partida.", () => {
+                        localStorage.removeItem('partidaInfo');
+                        window.location.href = 'start.html';
+                    });
+                } else {
+                    // Caso de mensaje inesperado
+                    showAlert("Hubo un error inesperado. Por favor, intenta nuevamente.");
+                }
+            } catch (error) {
+                console.error("Error al registrar la respuesta:", error);
+                showAlert("Hubo un error al registrar la respuesta. Por favor, inténtalo nuevamente.");
+            }
+        }
+        
+        function manejarPuntaje(message) {
+            const puntajeObtenido = parseInt(message.split(":")[1]?.trim()) || 0;
+            console.log("Puntaje obtenido:", puntajeObtenido);
+            return puntajeObtenido;
+        }
+        
+        function actualizarInformacionPartida() {
+            const partidaInfo = JSON.parse(localStorage.getItem('partidaInfo'));
+        
+            if (!partidaInfo) {
+                console.warn("No se encontró información de la partida.");
+                return;
+            }
+        
+            const nombreUElement = document.getElementById('nombreU');
+            const dificultadElement = document.getElementById('dificultad');
+            const tiempoElement = document.getElementById('tiempo');
+            const puntajeElement = document.getElementById('puntaje');
+        
+            if (nombreUElement) nombreUElement.textContent = partidaInfo.jugador || "Desconocido";
+            if (dificultadElement) dificultadElement.textContent = partidaInfo.dificultad || "No asignada";
+            if (tiempoElement) tiempoElement.textContent = `${partidaInfo.tiempoPorPregunta || 0} segundos`;
+            if (puntajeElement) puntajeElement.textContent = partidaInfo.puntajeAcumulado || 0;
+        }
+        
+
+        // Agregar evento a las opciones
         preguntaActual.opcionesDeRespuesta.forEach((opcion, index) => {
             const opcionElement = document.getElementById(`opcion${index + 1}`);
             if (opcionElement) {
                 opcionElement.textContent = opcion;
-                opcionElement.addEventListener('click', async () => {
-                    try {
-                        // Determinar la letra correspondiente a la opción elegida
-                        const letraOpcionElegida = String.fromCharCode(65 + index); // A, B, C, D según el índice
-
-                        // Crear el objeto Respuesta
-                        const respuesta = {
-                            preguntaAsociada: {
-                                enunciado: preguntaActual.enunciado,
-                                respuestaCorrecta: preguntaActual.respuestaCorrecta
-                            },
-                            opcionElegida: letraOpcionElegida,
-                            tiempoTranscurrido: obtenerTiempoTranscurrido(), // Obtener el tiempo transcurrido de alguna manera
-                            jugador: { nombre: "Jugador1" } // Datos básicos del jugador
-                        };
-
-                        console.log("Datos de la respuesta a enviar:", respuesta);
-
-                        // Realizar la solicitud POST al backend para registrar la respuesta
-                        const response = await fetch('https://localhost:8080/api/registrarRespuesta', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(respuesta)
-                        });
-
-                        const mensaje = await response.text();
-                        alert(mensaje);
-
-                        // Dependiendo de la respuesta, redirigir al jugador
-                        if (mensaje.includes("correcta")) {
-                            window.location.href = 'unJugador.html';
-                        } else {
-                            alert('Partida Finalizada. Gracias por jugar.');
-                            window.location.href = 'index.html';
-                        }
-                    } catch (error) {
-                        console.error('Error al registrar la respuesta:', error);
-                        alert('Hubo un error al registrar la respuesta. Por favor, inténtalo nuevamente.');
-                    }
+                opcionElement.addEventListener('click', () => {
+                    const letraOpcionElegida = String.fromCharCode(65 + index);
+                    const respuesta = {
+                        preguntaAsociada: {
+                            enunciado: preguntaActual.enunciado,
+                            respuestaCorrecta: preguntaActual.respuestaCorrecta,
+                        },
+                        opcionElegida: letraOpcionElegida,
+                        tiempoTranscurrido: obtenerTiempoTranscurrido(),
+                        jugador: { nombre: partidaInfo.jugador },
+                    };
+                    validarRespuesta(respuesta);
                 });
             }
         });
 
-        // Actualizar la información de la partida si el contenedor está presente en la página
-        //NO HA FUNCIONADO
-        if (partidaInfoContainer) {
-            actualizarInformacionPartida();
-        }
 
     } catch (error) {
-        console.error('Error al obtener la pregunta:', error);
-        const msg = "Hubo un error al cargar la pregunta.";
-        preguntaTextoElement.textContent = msg;
+        console.error('Error al registrar la respuesta:', error);
+        showAlert('Hubo un error al registrar la respuesta. Por favor, inténtalo nuevamente.');
     }
 
-    // Funciones auxiliares
+
+
+
+
     function startTextAnimation(text) {
         index = 0;
         preguntaTextoElement.innerHTML = "";
         typingSound.play();
         typeDialog(text);
     }
+
+
 
     function typeDialog(text) {
         if (index < text.length) {
@@ -186,8 +237,12 @@ document.addEventListener('DOMContentLoaded', async function () {
             setTimeout(() => typeDialog(text), typingSpeed);
         } else {
             typingSound.pause();
-            startTimer(30, () => {
-                showAlert("¡Se acabó el tiempo!");
+            startTimer(partidaInfo.tiempoPorPregunta, () => {
+
+                showAlert('Se acabó el tiempo!', () => {
+                    window.location.href = 'start.html';
+                });
+
             });
         }
     }
@@ -222,44 +277,28 @@ document.addEventListener('DOMContentLoaded', async function () {
         return 10; // Valor estático de prueba
     }
 
-    function showAlert(message) {
+    function showAlert(message, callback) {
+        const closeButton = document.getElementById('btnAlerta');
         const alertDialog = document.getElementById('alertDialog');
+
         if (!alertDialog) {
             console.warn("No se encontró el elemento de alerta (alertDialog). Verifica que el elemento esté presente en el HTML.");
             return;
         }
+
+        // Establece el mensaje
         document.getElementById('alertMessage').textContent = message;
+
+        // Muestra el cuadro de diálogo
         alertDialog.showModal();
+
+        // Agrega un evento para cerrar el cuadro de diálogo solo con el botón
+        closeButton.addEventListener('click', () => {
+            alertDialog.close();
+            if (typeof callback === 'function') {
+                callback(); // Ejecuta la función adicional si se pasa
+            }
+        }, { once: true });
     }
 
-    
-    
-    function actualizarInformacionPartida() {
-        const partidaInfoContainer = document.getElementById('partidaInfo');
-        if (!partidaInfoContainer) {
-            console.warn("No se encontró el contenedor de información de la partida (partidaInfo). Verifica que el elemento esté presente en el HTML.");
-        }
-    
-        const jugador = "Jugador1";
-        const dificultad = localStorage.getItem('dificultad') || 'N/A';
-        const respuestasCorrectas = parseInt(localStorage.getItem('respuestasCorrectas') || '0', 10);
-        const puntajeAcumulado = parseInt(localStorage.getItem('puntajeAcumulado') || '0', 10);
-    
-        console.log("Actualizando información de la partida:", { jugador, dificultad, respuestasCorrectas, puntajeAcumulado });
-    
-        // Actualizar el `localStorage` para que esté disponible en la página `unJugador.html`
-        localStorage.setItem('partidaInfo', JSON.stringify({ jugador, dificultad, respuestasCorrectas, puntajeAcumulado }));
-    
-        // Actualizar el cuadro de información de la partida en la página actual si el contenedor está presente
-        if (partidaInfoContainer) {
-            partidaInfoContainer.innerHTML = `
-                <div class="nes-container is-rounded">
-                    <p><strong>Jugador:</strong> ${jugador}</p>
-                    <p><strong>Dificultad:</strong> ${dificultad}</p>
-                    <p><strong>Respuestas Correctas:</strong> ${respuestasCorrectas}</p>
-                    <p><strong>Puntaje Acumulado:</strong> ${puntajeAcumulado}</p>
-                </div>
-            `;
-        }
-    }
 });
