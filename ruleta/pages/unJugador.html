@@ -25,29 +25,42 @@
                 <div id="resultEl"></div>
                 <button id="backBtn" class="menuBtn  backBtn">ATRAS</button>
             </div>
-            <div class="grid-item data-section">
-                <div class="nombreU">
-                    <img src="../images/user.png" id="icon">
-                    <label for="nombreU">Usuario</label>
-                </div>
-                <div class="dificultad">
-                    <img src="../images/a.png" id="icon">
-                    <label for="dificultad">Dificultad</label>
-                </div>
-                <div class="tiempo">
-                    <img src="../images/reloj.png" id="icon">
-                    <label for="nombreU">Tiempo por ronda</label>
-                </div>
-                <div class="puntaje">
-                    <img src="../images/coin.png" id="icon">
-                    <label for="coin">Puntaje</label>
+
+            <!-- Información de la partida en la columna de la derecha -->
+            <div class="grid-item partida-info" id="partidaInfo" style="position: relative; z-index: 100; border: 2px solid #000; padding: 10px; background-color: #fff;">
+                <!-- Aquí se actualizará la información de la partida mediante JavaScript -->
             </div>
-            </div>
+
 
         </div>
     </div>
     <audio id="spinSound" src="../audio/spin.mp3"></audio>
     <script src="../js/unJugador.js" type="module"></script>
     <script src="../js/audioController.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Leer la información de la partida desde `localStorage`
+            const partidaInfo = JSON.parse(localStorage.getItem('partidaInfo'));
+            if (partidaInfo) {
+                // Obtener el contenedor del cuadro de información de la partida
+                const partidaInfoContainer = document.getElementById('partidaInfo');
+                if (partidaInfoContainer) {
+                    // Actualizar el cuadro de información de la partida
+                    partidaInfoContainer.innerHTML = `
+                        <div class="nes-container is-rounded">
+                            <p><strong>Jugador:</strong> ${partidaInfo.jugador}</p>
+                            <p><strong>Dificultad:</strong> ${partidaInfo.dificultad}</p>
+                            <p><strong>Respuestas Correctas:</strong> ${partidaInfo.respuestasCorrectas}</p>
+                            <p><strong>Puntaje Acumulado:</strong> ${partidaInfo.puntajeAcumulado}</p>
+                        </div>
+                    `;
+                } else {
+                    console.warn("No se encontró el contenedor de información de la partida (partidaInfo).");
+                }
+            } else {
+                console.warn("No se encontró información de la partida en el `localStorage`.");
+            }
+        });
+    </script>
 </body>
 </html>

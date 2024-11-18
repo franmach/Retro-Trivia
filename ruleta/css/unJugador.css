@@ -55,6 +55,14 @@ canvas {
     color: #493649;
 }
 
+#partidaInfo {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
 
 
 .data-section{
