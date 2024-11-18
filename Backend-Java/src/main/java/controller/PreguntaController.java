@@ -25,13 +25,13 @@ public class PreguntaController {
         this.apiManager = apiManager;
     }
 
-    @GetMapping("/pregunta")
-    public ResponseEntity<Pregunta> obtenerPregunta(@RequestParam String categoria) {
-        Pregunta pregunta = apiManager.generarPregunta(categoria);
-        if (pregunta != null) {
-            return ResponseEntity.ok(pregunta);
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
+    //@GetMapping("/pregunta")
+    //public ResponseEntity<Pregunta> obtenerPregunta(@RequestParam String categoria) {
+    //    Pregunta pregunta = apiManager.generarPregunta(categoria);
+    //    if (pregunta != null) {
+    //        return ResponseEntity.ok(pregunta);
+    //    } else {
+    //        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    //    }
+    //}
 }

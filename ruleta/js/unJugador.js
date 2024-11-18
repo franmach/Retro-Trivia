@@ -75,6 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        console.log("Información de la partida cargada en unJugador:", partidaInfo); // LOG para verificar los datos
+
         const nombreUElement = document.getElementById('nombreU');
         const dificultadElement = document.getElementById('dificultad');
         const tiempoElement = document.getElementById('tiempo');

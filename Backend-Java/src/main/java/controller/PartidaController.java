@@ -39,9 +39,11 @@ public class PartidaController {
     public ResponseEntity<Partida> iniciarPartida(@RequestBody ConfiguracionPartida configuracion) {
         // Crear jugador temporal hasta que haya autenticación
         Jugador jugador = new Jugador("Jugador1", "correo@ejemplo.com", "1234");
+        
+        int puntajeInicial = 0;
 
         // Crear nueva partida con la configuración dada
-        partida = new Partida(jugador, configuracion.getDificultad(), configuracion.getTiempoPorPregunta());
+        partida = new Partida(jugador, configuracion.getDificultad(), configuracion.getTiempoPorPregunta(), puntajeInicial);
 
         return ResponseEntity.ok(partida);
     }
@@ -54,7 +56,9 @@ public class PartidaController {
         }
 
         // Llamar al API Manager para generar una nueva pregunta de la categoría seleccionada
-        Pregunta nuevaPregunta = apiManager.generarPregunta(categoria);
+        String dificultad = partida.getConfigPartida().getDificultad();
+        Pregunta nuevaPregunta = apiManager.generarPregunta(categoria, dificultad);
+        partida.registrarPregunta(nuevaPregunta); // Registrar la pregunta en la partida
         return ResponseEntity.ok(nuevaPregunta);
     }
 
@@ -84,13 +88,33 @@ public class PartidaController {
         return ResponseEntity.ok(mensaje);
     }
 
-    // Método auxiliar para calcular el puntaje basado en el tiempo transcurrido
+    // Método auxiliar para calcular el puntaje basado en el tiempo transcurrido y la dificultad
     private int calcularPuntaje(Respuesta respuesta) {
-        int puntajeMaximo = 100;
+        int puntajeMaximo = 120;
         int penalizacionPorSegundo = 5;
 
         int tiempoTranscurrido = respuesta.getTiempoTranscurrido();
         int puntajeObtenido = Math.max(0, puntajeMaximo - (tiempoTranscurrido * penalizacionPorSegundo));
+
+        // Aplicar el factor según la dificultad de la partida
+        String dificultad = partida.getConfigPartida().getDificultad();
+        double factorDificultad = 1.0;
+
+        switch (dificultad.toLowerCase()) {
+            case "fácil":
+                factorDificultad = 0.75;
+                break;
+            case "intermedio":
+                factorDificultad = 1.0;
+                break;
+            case "difícil":
+                factorDificultad = 1.25;
+                break;
+            default:
+                System.out.println("Dificultad desconocida. Usando factor por defecto (1.0).");
+        }
+
+        puntajeObtenido = (int) Math.round(puntajeObtenido * factorDificultad);
 
         return puntajeObtenido;
     }

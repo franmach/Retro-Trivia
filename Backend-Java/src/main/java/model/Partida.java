@@ -21,12 +21,12 @@ public class Partida {
     
 
     // Constructor inicial que asigna el jugador y la configuración del juego
-    public Partida(Jugador jugador, String dificultad, int tiempoPorPregunta ) {
+    public Partida(Jugador jugador, String dificultad, int tiempoPorPregunta, int puntaje) {
         this.jugador = jugador;
         this.respuestas = new ArrayList<>();
         this.preguntas = new ArrayList<>();
         this.estado = "EN_PROGRESO";
-        this.puntaje = 0;
+        this.puntaje = puntaje;
         this.configPartida = new ConfiguracionPartida(dificultad , tiempoPorPregunta);
     }
     //Formula para calculo de puntaje
@@ -52,7 +52,15 @@ public class Partida {
     
     }
     
-    public void registrarPregunta(Pregunta pregunta) {}
+    // Método para registrar una nueva pregunta en la partida
+    public void registrarPregunta(Pregunta pregunta) {
+        if (pregunta != null) {
+            preguntas.add(pregunta);
+            System.out.println("Pregunta registrada correctamente: " + pregunta.getEnunciado());
+        } else {
+            System.err.println("La pregunta no puede ser nula.");
+        }
+    }
 
     public void finalizarPartida() {
         this.estado = "FINALIZADA";
@@ -65,4 +73,8 @@ public class Partida {
     public String getEstado() { return estado; }
     public int getPuntaje() { return puntaje; }
     public void setPuntaje(int puntaje) { this.puntaje = puntaje; }
+
+    public ConfiguracionPartida getConfigPartida() {
+        return this.configPartida;
+    }
 }

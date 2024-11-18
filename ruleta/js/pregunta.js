@@ -11,6 +11,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     const partidaInfoContainer = document.getElementById('partidaInfo');
     const partidaInfo = JSON.parse(localStorage.getItem('partidaInfo'));
 
+    let tiempoInicial = 0; // Variable para almacenar el tiempo inicial del contador
+    let intervalId; // Variable para almacenar el ID del intervalo del temporizador
+
     if (!localStorage.getItem('partidaInfo')) {
         localStorage.setItem('partidaInfo', JSON.stringify({
             jugador: "Jugador1",
@@ -105,6 +108,8 @@ document.addEventListener('DOMContentLoaded', async function () {
         const preguntaActual = JSON.parse(localStorage.getItem('preguntaActual'));
         console.log("Pregunta actual cargada desde localStorage:", preguntaActual);
 
+        actualizarInformacionPartida();
+
         if (!preguntaActual || !preguntaActual.enunciado || !preguntaActual.opcionesDeRespuesta) {
             alert('No se encontró una pregunta válida. Por favor, regresa a la ruleta.');
             window.location.href = 'unJugador.html';
@@ -121,6 +126,30 @@ document.addEventListener('DOMContentLoaded', async function () {
         preguntaSoloTexto = preguntaCompleta.split('?')[0] + '?';
         startTextAnimation(preguntaSoloTexto);
         
+        // Agregar evento a las opciones
+        preguntaActual.opcionesDeRespuesta.forEach((opcion, index) => {
+            const opcionElement = document.getElementById(`opcion${index + 1}`);
+            if (opcionElement) {
+                opcionElement.textContent = opcion;
+                opcionElement.addEventListener('click', () => {
+
+                    detenerContador();
+
+                    const letraOpcionElegida = String.fromCharCode(65 + index);
+                    const respuesta = {
+                        preguntaAsociada: {
+                            enunciado: preguntaActual.enunciado,
+                            respuestaCorrecta: preguntaActual.respuestaCorrecta,
+                        },
+                        opcionElegida: letraOpcionElegida,
+                        tiempoTranscurrido: obtenerTiempoTranscurrido(),
+                        jugador: { nombre: partidaInfo.jugador },
+                    };
+                    validarRespuesta(respuesta);
+                });
+            }
+        });
+
 
         async function validarRespuesta(respuesta) {
             try {
@@ -146,13 +175,17 @@ document.addEventListener('DOMContentLoaded', async function () {
         
                     // Mostrar alerta y redirigir
                     showAlert(`¡Respuesta correcta! +${puntajeObtenido} puntos`, () => {
-                        window.location.href = 'unJugador.html';
+                        setTimeout(() => {
+                            window.location.href = 'unJugador.html';
+                        }, 500);
                     });
                 } else if (mensaje.startsWith("Respuesta incorrecta")) {
                     // Eliminar información de la partida y redirigir
                     showAlert("Respuesta incorrecta. Fin de la partida.", () => {
                         localStorage.removeItem('partidaInfo');
-                        window.location.href = 'start.html';
+                        setTimeout(() => {
+                            window.location.href = 'start.html';
+                        }, 500);
                     });
                 } else {
                     // Caso de mensaje inesperado
@@ -177,6 +210,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                 console.warn("No se encontró información de la partida.");
                 return;
             }
+
+
         
             const nombreUElement = document.getElementById('nombreU');
             const dificultadElement = document.getElementById('dificultad');
@@ -187,31 +222,12 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (dificultadElement) dificultadElement.textContent = partidaInfo.dificultad || "No asignada";
             if (tiempoElement) tiempoElement.textContent = `${partidaInfo.tiempoPorPregunta || 0} segundos`;
             if (puntajeElement) puntajeElement.textContent = partidaInfo.puntajeAcumulado || 0;
+
+            console.log("Información de la partida cargada en pregunta.JS:", partidaInfo);
         }
         
 
-        // Agregar evento a las opciones
-        preguntaActual.opcionesDeRespuesta.forEach((opcion, index) => {
-            const opcionElement = document.getElementById(`opcion${index + 1}`);
-            if (opcionElement) {
-                opcionElement.textContent = opcion;
-                opcionElement.addEventListener('click', () => {
-                    const letraOpcionElegida = String.fromCharCode(65 + index);
-                    const respuesta = {
-                        preguntaAsociada: {
-                            enunciado: preguntaActual.enunciado,
-                            respuestaCorrecta: preguntaActual.respuestaCorrecta,
-                        },
-                        opcionElegida: letraOpcionElegida,
-                        tiempoTranscurrido: obtenerTiempoTranscurrido(),
-                        jugador: { nombre: partidaInfo.jugador },
-                    };
-                    validarRespuesta(respuesta);
-                });
-            }
-        });
-
-
+        
     } catch (error) {
         console.error('Error al registrar la respuesta:', error);
         showAlert('Hubo un error al registrar la respuesta. Por favor, inténtalo nuevamente.');
@@ -248,34 +264,65 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     function startTimer(duration, onTimerEnd) {
-        const timerElement = document.getElementById('timer');
-        if (!timerElement) {
-            console.warn("No se encontró el elemento del temporizador (timer). Verifica que el elemento esté presente en el HTML.");
-            return;
-        }
-        let timeRemaining = duration;
+    const timerElement = document.getElementById('timer');
+    if (!timerElement) {
+        console.warn("No se encontró el elemento del temporizador (timer). Verifica que el elemento esté presente en el HTML.");
+        return;
+    }
 
-        timerElement.textContent = timeRemaining;
+    // Inicializar tiempo inicial
+    tiempoInicial = duration;
 
-        const intervalId = setInterval(() => {
-            timeRemaining--;
+    let timeRemaining = duration;
+    timerElement.textContent = timeRemaining;
 
-            if (timeRemaining <= 0) {
-                clearInterval(intervalId);
-                timerElement.textContent = "0";
-                if (typeof onTimerEnd === 'function') {
-                    onTimerEnd();
-                }
-            } else {
-                timerElement.textContent = timeRemaining;
+    intervalId = setInterval(() => {
+        timeRemaining--;
+
+        if (timeRemaining <= 0) {
+            detenerContador();
+            timerElement.textContent = "0";
+            if (typeof onTimerEnd === 'function') {
+                onTimerEnd();
             }
-        }, 1000);
+        } else {
+            timerElement.textContent = timeRemaining;
+        }
+    }, 1000);
+}
+
+function detenerContador() {
+    if (intervalId) {
+        clearInterval(intervalId);
+        console.log("Contador detenido.");
+    } else {
+        console.warn("No se pudo detener el contador porque no se encontró un intervalo activo.");
+    }
+}
+
+function obtenerTiempoTranscurrido() {
+    // Obtener el valor actual del temporizador desde el elemento HTML
+    const timerElement = document.getElementById('timer');
+    if (!timerElement) {
+        console.warn("No se encontró el elemento del temporizador (timer). Verifica que el elemento esté presente en el HTML.");
+        return 0;
     }
 
-    function obtenerTiempoTranscurrido() {
-        // Implementar la lógica para obtener el tiempo transcurrido
-        return 10; // Valor estático de prueba
+    const tiempoRestante = parseInt(timerElement.textContent, 10);
+    if (isNaN(tiempoRestante)) {
+        console.warn("No se pudo obtener el tiempo restante del temporizador.");
+        return 0;
     }
+
+    // Verificar si tiempoInicial está definido correctamente
+    if (typeof tiempoInicial === 'undefined' || tiempoInicial === 0) {
+        console.warn("El tiempo inicial no se ha definido correctamente.");
+        return 0;
+    }
+
+    // Calcular el tiempo transcurrido
+    return tiempoInicial - tiempoRestante;
+}
 
     function showAlert(message, callback) {
         const closeButton = document.getElementById('btnAlerta');
