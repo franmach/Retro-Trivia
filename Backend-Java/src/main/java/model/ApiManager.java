@@ -89,7 +89,7 @@ public class ApiManager {
     
     // Método para generar una pregunta con opciones
     // Método para generar una pregunta con opciones
-public Pregunta generarPregunta(String categoria) {
+public Pregunta generarPregunta(String categoria, String dificultad) {
     // Verificar si la cuota está agotada antes de realizar la solicitud
     if (isQuotaExceeded()) {
         System.out.println("La cuota de la API está agotada. Usando pregunta predeterminada.");
@@ -99,19 +99,23 @@ public Pregunta generarPregunta(String categoria) {
     // Crear el payload para la API de ChatGPT
     Map<String, Object> payload = new HashMap<>();
     payload.put("model", "gpt-4o-mini");
-    payload.put("max_tokens", 100);
+    payload.put("max_tokens", 150);
 
-    // Crear el mensaje para el prompt
+    // Crear el mensaje para el prompt, incluyendo la dificultad seleccionada y un factor aleatorio
     List<Map<String, String>> messages = new ArrayList<>();
     Map<String, String> userMessage = new HashMap<>();
     userMessage.put("role", "user");
-    userMessage.put("content", "Generar una pregunta de trivia sobre " + categoria +
-            " con 4 opciones de las cuales una debe ser correcta. El formato de opciones debe ser:\n" +
+    userMessage.put("content", "Generar una pregunta nueva y única de trivia sobre " + categoria +
+            " con dificultad " + dificultad +
+            ". Debe incluir 4 opciones de las cuales una debe ser correcta. El formato de opciones debe ser:\n" +
             "(A) Opción 1\n(B) Opción 2\n(C) Opción 3\n(D) Opción 4\n" +
             "La respuesta correcta debe indicarse claramente al final en el formato:\n" +
-            "Respuesta correcta: (A), (B), (C), o (D).");
-    messages.add(userMessage);
+            "Respuesta correcta: (A), (B), (C), o (D). Para asegurarse de que esta pregunta sea diferente a las anteriores, incluye variaciones únicas en el enunciado.");
 
+    // Agregar un identificador aleatorio para aumentar la variabilidad
+    userMessage.put("content", userMessage.get("content") + "\nIdentificador de variabilidad: " + Math.random());
+
+    messages.add(userMessage);
     payload.put("messages", messages); // Agregar mensajes al payload
 
     // Enviar la solicitud y procesar la respuesta
@@ -128,7 +132,7 @@ public Pregunta generarPregunta(String categoria) {
         // Procesar el enunciado para extraer opciones y respuesta correcta
         List<String> opciones = new ArrayList<>();
         String respuestaCorrecta = "";
-        
+
         // Separar el enunciado por líneas y buscar las opciones y la respuesta correcta
         String[] lineas = enunciado.split("\n");
         for (String linea : lineas) {
@@ -149,8 +153,8 @@ public Pregunta generarPregunta(String categoria) {
         }
 
         // Crear y devolver la instancia de Pregunta
-        return new Pregunta(enunciado, opciones, respuestaCorrecta, categoria, "media");
-        
+        return new Pregunta(enunciado, opciones, respuestaCorrecta, categoria, dificultad);
+
     } catch (HttpClientErrorException e) {
         if (e.getStatusCode() == HttpStatus.TOO_MANY_REQUESTS || e.getResponseBodyAsString().contains("insufficient_quota")) {
             System.out.println("Insufficient quota detectada. Usando pregunta predeterminada.");

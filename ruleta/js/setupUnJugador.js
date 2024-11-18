@@ -26,6 +26,7 @@ document.getElementById("startGameBtn").addEventListener("click", async () => {
         jugador: usuario?.nombre || "Desconocido", // Valor por defecto si no hay usuario
         dificultad: dificultad.value,
         tiempoPorPregunta: parseInt(selectTiempo.value),
+        puntajeAcumulado: 0,
     
     };
 

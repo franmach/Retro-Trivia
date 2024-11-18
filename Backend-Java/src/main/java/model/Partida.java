@@ -13,21 +13,21 @@ import java.util.List;
  */
 public class Partida {
     private Jugador jugador; // Jugador que participa en la partida
-    private String dificultad; // Dificultad de las preguntas
-    private int tiempoPorPregunta; // Tiempo límite por pregunta en segundos
-    private String categoriaActual; // Categoría seleccionada
     private List<Respuesta> respuestas; // Respuestas del jugador
+    private List<Pregunta> preguntas;
     private String estado; // Estado de la partida: "EN_PROGRESO", "FINALIZADA"
     private int puntaje; // Puntaje acumulado
+    private ConfiguracionPartida configPartida;
+    
 
     // Constructor inicial que asigna el jugador y la configuración del juego
-    public Partida(Jugador jugador, String dificultad, int tiempoPorPregunta) {
+    public Partida(Jugador jugador, String dificultad, int tiempoPorPregunta, int puntaje) {
         this.jugador = jugador;
-        this.dificultad = dificultad;
-        this.tiempoPorPregunta = tiempoPorPregunta;
         this.respuestas = new ArrayList<>();
+        this.preguntas = new ArrayList<>();
         this.estado = "EN_PROGRESO";
-        this.puntaje = 0;
+        this.puntaje = puntaje;
+        this.configPartida = new ConfiguracionPartida(dificultad , tiempoPorPregunta);
     }
     //Formula para calculo de puntaje
     //puntaje=max(0,puntaje_maximo−(tiempo_transcurrido×penalizacion_por_segundo))
@@ -49,7 +49,18 @@ public class Partida {
         // Actualizar el puntaje total del jugador
         puntaje += puntajeObtenido;
     }
-}
+    
+    }
+    
+    // Método para registrar una nueva pregunta en la partida
+    public void registrarPregunta(Pregunta pregunta) {
+        if (pregunta != null) {
+            preguntas.add(pregunta);
+            System.out.println("Pregunta registrada correctamente: " + pregunta.getEnunciado());
+        } else {
+            System.err.println("La pregunta no puede ser nula.");
+        }
+    }
 
     public void finalizarPartida() {
         this.estado = "FINALIZADA";
@@ -58,12 +69,12 @@ public class Partida {
 
     // Getters y Setters
     public Jugador getJugador() { return jugador; }
-    public String getDificultad() { return dificultad; }
-    public int getTiempoPorPregunta() { return tiempoPorPregunta; }
-    public String getCategoriaActual() { return categoriaActual; }
-    public void setCategoriaActual(String categoriaActual) { this.categoriaActual = categoriaActual; }
     public List<Respuesta> getRespuestas() { return respuestas; }
     public String getEstado() { return estado; }
     public int getPuntaje() { return puntaje; }
     public void setPuntaje(int puntaje) { this.puntaje = puntaje; }
+
+    public ConfiguracionPartida getConfigPartida() {
+        return this.configPartida;
+    }
 }
