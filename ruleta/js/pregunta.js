@@ -3,7 +3,12 @@ document.addEventListener('DOMContentLoaded', async function () {
     const iconoCategoria = document.getElementById('iconoCategoria');
     const preguntaTextoElement = document.getElementById('preguntaTexto');
     const opcionesContainer = document.getElementById('opciones');
+
     const typingSound = document.getElementById('typingSound');
+    const loserSound = document.getElementById('loserSound');
+    const winSound = document.getElementById('winnerSound');
+
+
     const preguntaContainer = document.querySelector('.pregunta');
     const colorPregunta = document.querySelector('.dialog-text p');
     const colorOpciones = document.querySelectorAll('#opciones button');
@@ -13,6 +18,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     let tiempoInicial = 0; // Variable para almacenar el tiempo inicial del contador
     let intervalId; // Variable para almacenar el ID del intervalo del temporizador
+
 
     if (!localStorage.getItem('partidaInfo')) {
         localStorage.setItem('partidaInfo', JSON.stringify({
@@ -119,13 +125,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         console.log("Datos recibidos del backend:", preguntaActual);
 
         // Mostrar la pregunta y las opciones
-        categoriaElement.textContent = `Categoría: ${preguntaActual.categoria}`;
+        categoriaElement.textContent = preguntaActual.categoria;
         applyCategoryStyles(preguntaActual.categoria);
 
         preguntaCompleta = preguntaActual.enunciado;
         preguntaSoloTexto = preguntaCompleta.split('?')[0] + '?';
         startTextAnimation(preguntaSoloTexto);
-        
+
         // Agregar evento a las opciones
         preguntaActual.opcionesDeRespuesta.forEach((opcion, index) => {
             const opcionElement = document.getElementById(`opcion${index + 1}`);
@@ -160,19 +166,23 @@ document.addEventListener('DOMContentLoaded', async function () {
                     },
                     body: JSON.stringify(respuesta),
                 });
-        
+
                 const mensaje = await response.text();
                 console.log("Mensaje del servidor:", mensaje);
-        
+
                 if (mensaje.startsWith("Respuesta correcta")) {
                     // Extraer el puntaje obtenido
+
+
                     const puntajeObtenido = manejarPuntaje(mensaje);
-        
+
                     // Actualizar y guardar en localStorage
                     partidaInfo.puntajeAcumulado += puntajeObtenido;
                     localStorage.setItem('partidaInfo', JSON.stringify(partidaInfo));
                     actualizarInformacionPartida();
-        
+                    winSound.currentTime = 0;
+                    winSound.play();
+
                     // Mostrar alerta y redirigir
                     showAlert(`¡Respuesta correcta! +${puntajeObtenido} puntos`, () => {
                         setTimeout(() => {
@@ -181,7 +191,10 @@ document.addEventListener('DOMContentLoaded', async function () {
                     });
                 } else if (mensaje.startsWith("Respuesta incorrecta")) {
                     // Eliminar información de la partida y redirigir
-                    showAlert("Respuesta incorrecta. Fin de la partida.", () => {
+                    loserSound.currentTime = 0;
+                    loserSound.play();
+                    finAlert(() => {
+                        // Redirigir a la pantalla inicial o realizar otras acciones
                         localStorage.removeItem('partidaInfo');
                         setTimeout(() => {
                             window.location.href = 'start.html';
@@ -196,28 +209,28 @@ document.addEventListener('DOMContentLoaded', async function () {
                 showAlert("Hubo un error al registrar la respuesta. Por favor, inténtalo nuevamente.");
             }
         }
-        
+
         function manejarPuntaje(message) {
             const puntajeObtenido = parseInt(message.split(":")[1]?.trim()) || 0;
             console.log("Puntaje obtenido:", puntajeObtenido);
             return puntajeObtenido;
         }
-        
+
         function actualizarInformacionPartida() {
             const partidaInfo = JSON.parse(localStorage.getItem('partidaInfo'));
-        
+
             if (!partidaInfo) {
                 console.warn("No se encontró información de la partida.");
                 return;
             }
 
 
-        
+
             const nombreUElement = document.getElementById('nombreU');
             const dificultadElement = document.getElementById('dificultad');
             const tiempoElement = document.getElementById('tiempo');
             const puntajeElement = document.getElementById('puntaje');
-        
+
             if (nombreUElement) nombreUElement.textContent = partidaInfo.jugador || "Desconocido";
             if (dificultadElement) dificultadElement.textContent = partidaInfo.dificultad || "No asignada";
             if (tiempoElement) tiempoElement.textContent = `${partidaInfo.tiempoPorPregunta || 0} segundos`;
@@ -225,9 +238,9 @@ document.addEventListener('DOMContentLoaded', async function () {
 
             console.log("Información de la partida cargada en pregunta.JS:", partidaInfo);
         }
-        
 
-        
+
+
     } catch (error) {
         console.error('Error al registrar la respuesta:', error);
         showAlert('Hubo un error al registrar la respuesta. Por favor, inténtalo nuevamente.');
@@ -244,7 +257,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         typeDialog(text);
     }
 
-
+    const tituloFin = document.getElementById('tituloFin');
 
     function typeDialog(text) {
         if (index < text.length) {
@@ -254,8 +267,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         } else {
             typingSound.pause();
             startTimer(partidaInfo.tiempoPorPregunta, () => {
-
-                showAlert('Se acabó el tiempo!', () => {
+                loserSound.currentTime = 0;
+                    loserSound.play();
+                tituloFin.textContent = 'SE ACABO EL TIEMPO!';
+                finAlert(() => {
+                    // Redirigir a la pantalla inicial o realizar otras acciones
                     window.location.href = 'start.html';
                 });
 
@@ -264,65 +280,65 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     function startTimer(duration, onTimerEnd) {
-    const timerElement = document.getElementById('timer');
-    if (!timerElement) {
-        console.warn("No se encontró el elemento del temporizador (timer). Verifica que el elemento esté presente en el HTML.");
-        return;
-    }
-
-    // Inicializar tiempo inicial
-    tiempoInicial = duration;
-
-    let timeRemaining = duration;
-    timerElement.textContent = timeRemaining;
-
-    intervalId = setInterval(() => {
-        timeRemaining--;
-
-        if (timeRemaining <= 0) {
-            detenerContador();
-            timerElement.textContent = "0";
-            if (typeof onTimerEnd === 'function') {
-                onTimerEnd();
-            }
-        } else {
-            timerElement.textContent = timeRemaining;
+        const timerElement = document.getElementById('timer');
+        if (!timerElement) {
+            console.warn("No se encontró el elemento del temporizador (timer). Verifica que el elemento esté presente en el HTML.");
+            return;
         }
-    }, 1000);
-}
 
-function detenerContador() {
-    if (intervalId) {
-        clearInterval(intervalId);
-        console.log("Contador detenido.");
-    } else {
-        console.warn("No se pudo detener el contador porque no se encontró un intervalo activo.");
-    }
-}
+        // Inicializar tiempo inicial
+        tiempoInicial = duration;
 
-function obtenerTiempoTranscurrido() {
-    // Obtener el valor actual del temporizador desde el elemento HTML
-    const timerElement = document.getElementById('timer');
-    if (!timerElement) {
-        console.warn("No se encontró el elemento del temporizador (timer). Verifica que el elemento esté presente en el HTML.");
-        return 0;
-    }
+        let timeRemaining = duration;
+        timerElement.textContent = timeRemaining;
 
-    const tiempoRestante = parseInt(timerElement.textContent, 10);
-    if (isNaN(tiempoRestante)) {
-        console.warn("No se pudo obtener el tiempo restante del temporizador.");
-        return 0;
+        intervalId = setInterval(() => {
+            timeRemaining--;
+
+            if (timeRemaining <= 0) {
+                detenerContador();
+                timerElement.textContent = "0";
+                if (typeof onTimerEnd === 'function') {
+                    onTimerEnd();
+                }
+            } else {
+                timerElement.textContent = timeRemaining;
+            }
+        }, 1000);
     }
 
-    // Verificar si tiempoInicial está definido correctamente
-    if (typeof tiempoInicial === 'undefined' || tiempoInicial === 0) {
-        console.warn("El tiempo inicial no se ha definido correctamente.");
-        return 0;
+    function detenerContador() {
+        if (intervalId) {
+            clearInterval(intervalId);
+            console.log("Contador detenido.");
+        } else {
+            console.warn("No se pudo detener el contador porque no se encontró un intervalo activo.");
+        }
     }
 
-    // Calcular el tiempo transcurrido
-    return tiempoInicial - tiempoRestante;
-}
+    function obtenerTiempoTranscurrido() {
+        // Obtener el valor actual del temporizador desde el elemento HTML
+        const timerElement = document.getElementById('timer');
+        if (!timerElement) {
+            console.warn("No se encontró el elemento del temporizador (timer). Verifica que el elemento esté presente en el HTML.");
+            return 0;
+        }
+
+        const tiempoRestante = parseInt(timerElement.textContent, 10);
+        if (isNaN(tiempoRestante)) {
+            console.warn("No se pudo obtener el tiempo restante del temporizador.");
+            return 0;
+        }
+
+        // Verificar si tiempoInicial está definido correctamente
+        if (typeof tiempoInicial === 'undefined' || tiempoInicial === 0) {
+            console.warn("El tiempo inicial no se ha definido correctamente.");
+            return 0;
+        }
+
+        // Calcular el tiempo transcurrido
+        return tiempoInicial - tiempoRestante;
+    }
 
     function showAlert(message, callback) {
         const closeButton = document.getElementById('btnAlerta');
@@ -348,4 +364,64 @@ function obtenerTiempoTranscurrido() {
         }, { once: true });
     }
 
+    function finAlert(callback) {
+        const closeButton = document.getElementById('btnFin');
+        const finDialog = document.getElementById('finDialog');
+
+        if (!finDialog) {
+            console.warn("No se encontró el elemento de alerta (finDialog). Verifica que el elemento esté presente en el HTML.");
+            return;
+        }
+
+        // Obtener información de la partida desde `localStorage`
+        const partidaInfo = JSON.parse(localStorage.getItem('partidaInfo'));
+        if (!partidaInfo) {
+            console.warn("No se encontró información de la partida en el `localStorage`.");
+            return;
+        }
+
+        // Construir contenido dinámico con los datos de la partida
+        const finMessageElement = document.getElementById('finMessage');
+        finMessageElement.innerHTML = `
+            <p>Jugador: ${partidaInfo.jugador || "Desconocido"}</p>
+            <p>Dificultad: ${partidaInfo.dificultad || "No asignada"}</p>
+            <p>Puntaje Final: ${partidaInfo.puntajeAcumulado || 0}</p>
+        `;
+
+        // Muestra el cuadro de diálogo
+        finDialog.showModal();
+
+        // Agrega un evento para cerrar el cuadro de diálogo solo con el botón
+        closeButton.addEventListener('click', () => {
+            finDialog.close();
+            if (typeof callback === 'function') {
+                callback(); // Ejecuta la función adicional si se pasa
+            }
+        }, { once: true });
+    }
+    const tituloAlert = document.getElementById('tituloAlert');
+    const rollCard = document.getElementById('roll');
+    rollCard.addEventListener('click', () =>{
+        tituloAlert.textContent='Roll Card'
+        showAlert('Volviendo a la ruleta',() => {
+            window.location.href = 'unJugador.html';
+        });
+
+    });
+
+
+    const cardContainers = document.querySelectorAll('.card-container');
+
+    cardContainers.forEach(container => {
+        const tooltip = container.querySelector('.tooltip');
+        if (!tooltip) return;
+
+        container.addEventListener('mouseenter', () => {
+            tooltip.classList.remove('hidden');
+        });
+
+        container.addEventListener('mouseleave', () => {
+            tooltip.classList.add('hidden');
+        });
+    });
 });

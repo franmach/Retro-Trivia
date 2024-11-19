@@ -92,3 +92,19 @@ label {
     margin-bottom: 0;
 }
 
+.btnMessage{
+    font-size: 15px;
+    align-self: center;
+    width: fit-content;
+    color: white !important;
+    padding: 10px;
+    background-color: #493649 !important;
+    
+}
+
+.btnMessage:hover {
+    background-color: #8e777f !important;
+    color: #493649 !important;
+    box-shadow: 0 0 15px #493649, 0 0 25px #493649 !important;
+}
+

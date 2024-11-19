@@ -90,8 +90,8 @@ public class PartidaController {
 
     // Método auxiliar para calcular el puntaje basado en el tiempo transcurrido y la dificultad
     private int calcularPuntaje(Respuesta respuesta) {
-        int puntajeMaximo = 120;
-        int penalizacionPorSegundo = 5;
+        int puntajeMaximo = 200;
+        int penalizacionPorSegundo = 3;
 
         int tiempoTranscurrido = respuesta.getTiempoTranscurrido();
         int puntajeObtenido = Math.max(0, puntajeMaximo - (tiempoTranscurrido * penalizacionPorSegundo));
@@ -102,13 +102,13 @@ public class PartidaController {
 
         switch (dificultad.toLowerCase()) {
             case "fácil":
-                factorDificultad = 0.75;
-                break;
-            case "intermedio":
                 factorDificultad = 1.0;
                 break;
-            case "difícil":
+            case "intermedio":
                 factorDificultad = 1.25;
+                break;
+            case "difícil":
+                factorDificultad = 1.50;
                 break;
             default:
                 System.out.println("Dificultad desconocida. Usando factor por defecto (1.0).");
