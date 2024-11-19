@@ -103,7 +103,7 @@
 /* Carrusel interno */
 .powers-carousel {
     display: flex;
-    gap: 10px;
+    gap: 20px;
     padding: 10px;
     width: 100%;
     position: relative;
@@ -164,4 +164,32 @@
     height: 70px;
     margin-bottom: 0;
     margin-right: 0;
+}
+
+#finDialog, #alertDialog{
+    background-color: #493649;
+    color: white;
+}
+
+
+.tooltip {
+    text-align: left;
+
+    position: absolute;
+    bottom: 200px; /* Ajusta según sea necesario */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card-container:hover .tooltip {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.hidden {
+    display: none;
 }

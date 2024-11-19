@@ -31,17 +31,11 @@ function applySoundEvents() {
          });
      }
 
-     const startButton = document.getElementById('pressStartText');
-     if (startButton) {
-         startButton.addEventListener('click', () => {
-             backgroundMusic.play();
-             console.log('musiquita')
-         });
-     }
 }
 
 // Ejecutar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
     applySoundEvents();
+  
 });
 

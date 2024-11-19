@@ -38,18 +38,27 @@
                         <div class="card">
                             <img src="../images/king.png" alt="King Power" height="150px" width="150px">
                         </div>
+                        <section class="nes-balloon tooltip hidden">
+                            <p>Usa este poder para duplicar tus puntos actuales.</p>
+                        </section>
                     </div>
-
-                    <div class="card-container">
+                    
+                    <div class="card-container" id="roll">
                         <div class="card">
                             <img src="../images/roll.png" alt="Roll Power" height="150px" width="150px">
                         </div>
+                        <section class="nes-balloon tooltip hidden" id="roll">
+                            <p>Gira nuevamente la ruleta para cambiar de categoría.</p>
+                        </section>
                     </div>
-
-                    <div class="card-container">
+                    
+                    <div class="card-container" id="hint">
                         <div class="card">
                             <img src="../images/hint.png" alt="Hint Power" height="150px" width="150px">
                         </div>
+                        <section class="nes-balloon tooltip hidden">
+                            <p>Revela una pista sobre la respuesta correcta.</p>
+                        </section>
                     </div>
 
                 </div>
@@ -68,19 +77,31 @@
         </div>
         <!-- Diálogo de alerta personalizado -->
         <dialog class="nes-dialog " id="alertDialog">
-            <form method="dialog" style="align-items: center;
-            display: flex;
+            <form method="dialog" style="align-items: center; display: flex;
             flex-direction: column;
             ">
-                <p class="title"></p>
+                <p id="tituloAlert">ACERTASTE</p>
                 <p id="alertMessage"></p>
                 <menu class="dialog-menu" style="margin: auto; padding: 0;">
-                    <button id="btnAlerta" class="nes-btn menuBtn">Aceptar</button>
+                    <button id="btnAlerta" class="btnMessage nes-btn menuBtn">Aceptar</button>
+                </menu>
+            </form>
+        </dialog>
+
+        <dialog class="nes-dialog" id="finDialog">
+            <form method="dialog" style="align-items: center; display: flex; flex-direction: column;">
+                <p id="tituloFin">FIN DE LA PARTIDA</p>
+                <div id="finMessage" style="text-align: left;"></div>
+                <menu class="dialog-menu" style="margin: auto; padding: 0;">
+                    <button id="btnFin" class="btnMessage nes-btn menuBtn ">Aceptar</button>
                 </menu>
             </form>
         </dialog>
     </div>
     <audio id="typingSound" src="../audio/typing.mp3" loop></audio>
+    <audio id="loserSound" src="../audio/loser.mp3"></audio>
+    <audio id="winnerSound" src="../audio/winner.mp3"></audio>
+
     <script src="../js/pregunta.js" defer></script>
     <script src="../js/audioController.js" defer></script>
 
