@@ -31,36 +31,64 @@
                 <button class="nes-btn " id="opcion3">C</button>
                 <button class="nes-btn " id="opcion4">D</button>
             </div>
-            <div class="footer-preguntas">
+            <div class="footer-preguntas" id="poderes">
                 <div class="powers-carousel">
 
-                    <div class="card-container">
-                        <div class="card">
-                            <img src="../images/king.png" alt="King Power" height="150px" width="150px">
-                        </div>
-                        <section class="nes-balloon tooltip hidden">
-                            <p>Usa este poder para duplicar tus puntos actuales.</p>
-                        </section>
-                    </div>
-                    
-                    <div class="card-container" id="roll">
-                        <div class="card">
-                            <img src="../images/roll.png" alt="Roll Power" height="150px" width="150px">
-                        </div>
-                        <section class="nes-balloon tooltip hidden" id="roll">
-                            <p>Gira nuevamente la ruleta para cambiar de categoría.</p>
-                        </section>
-                    </div>
-                    
                     <div class="card-container" id="hint">
                         <div class="card">
                             <img src="../images/hint.png" alt="Hint Power" height="150px" width="150px">
                         </div>
                         <section class="nes-balloon tooltip hidden">
                             <p>Revela una pista sobre la respuesta correcta.</p>
+                            <p>
+                                <i class="nes-icon coin is-small"></i>
+                                500
+                            </p>
                         </section>
                     </div>
 
+
+                    <div class="card-container" id="fifty">
+                        <div class="card">
+                            <img src="../images/fifty.png" alt="fifty fifty" height="150px" width="150px">
+                        </div>
+                        <section class="nes-balloon tooltip hidden">
+                            <p>Elimina dos opciones incorrectas.</p>
+                            <p>
+                                <i class="nes-icon coin is-small"></i>
+                                750
+                            </p>
+                        </section>
+                    </div>
+
+                    <div class="card-container" id="roll">
+                        <div class="card">
+                            <img src="../images/roll.png" alt="Roll Power" height="150px" width="150px">
+                        </div>
+                        <section class="nes-balloon tooltip hidden" id="roll">
+                            <p>Gira nuevamente la ruleta para cambiar de categoría.</p>
+                            <p>
+                                <i class="nes-icon coin is-small"></i>
+                                1000
+                            </p>
+                        </section>
+                    </div>
+
+
+
+
+                    <div class="card-container" id="king">
+                        <div class="card">
+                            <img src="../images/king.png" alt="King Power" height="150px" width="150px">
+                        </div>
+                        <section class="nes-balloon tooltip hidden">
+                            <p>Usa este poder para duplicar tus puntos actuales.</p>
+                            <p>
+                                <i class="nes-icon coin is-small"></i>
+                                no se
+                            </p>
+                        </section>
+                    </div>
                 </div>
                 <div id="puntajeContainer">
                     <img src="../images/coin.png" id="coin" width="70px">
@@ -77,9 +105,7 @@
         </div>
         <!-- Diálogo de alerta personalizado -->
         <dialog class="nes-dialog " id="alertDialog">
-            <form method="dialog" style="align-items: center; display: flex;
-            flex-direction: column;
-            ">
+            <form method="dialog" style="align-items: center; display: flex; flex-direction: column;">
                 <p id="tituloAlert">ACERTASTE</p>
                 <p id="alertMessage"></p>
                 <menu class="dialog-menu" style="margin: auto; padding: 0;">

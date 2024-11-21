@@ -4,6 +4,7 @@
  */
 package controller;
 
+import java.util.Map;
 import model.ApiManager;
 import model.ConfiguracionPartida;
 import model.Jugador;
@@ -87,6 +88,27 @@ public class PartidaController {
 
         return ResponseEntity.ok(mensaje);
     }
+    
+     // Obtener pista para una pregunta específica
+    @PostMapping("/pista")
+    public ResponseEntity<Map<String, String>> obtenerPista(@RequestBody Map<String, String> request) {
+        if (partida == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "No hay partida activa"));
+        }
+
+        String pregunta = request.get("pregunta");
+        if (pregunta == null || pregunta.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "La pregunta es requerida"));
+        }
+
+        try {
+            String pista = apiManager.generarPista(pregunta);
+            return ResponseEntity.ok(Map.of("pista", pista));
+        } catch (Exception e) {
+            System.err.println("Error al obtener la pista: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "No se pudo generar una pista"));
+        }
+    }
 
     // Método auxiliar para calcular el puntaje basado en el tiempo transcurrido y la dificultad
     private int calcularPuntaje(Respuesta respuesta) {
@@ -118,4 +140,6 @@ public class PartidaController {
 
         return puntajeObtenido;
     }
+    
+    
 }
