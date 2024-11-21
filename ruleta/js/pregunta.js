@@ -1,4 +1,11 @@
 document.addEventListener('DOMContentLoaded', async function () {
+  
+
+    const puntajeElement = document.getElementById('puntaje');
+    const typingSpeed = 50;
+    let index = 0;
+    let preguntaSoloTexto = "";
+
     const categoriaElement = document.getElementById('categoria');
     const iconoCategoria = document.getElementById('iconoCategoria');
     const preguntaTextoElement = document.getElementById('preguntaTexto');
@@ -14,26 +21,12 @@ document.addEventListener('DOMContentLoaded', async function () {
     const colorOpciones = document.querySelectorAll('#opciones button');
     const colorFooter = document.querySelectorAll('.textoFooter');
     const partidaInfoContainer = document.getElementById('partidaInfo');
-    const partidaInfo = JSON.parse(localStorage.getItem('partidaInfo'));
+
+    const partidaInfo = JSON.parse(localStorage.getItem('partidaInfo')) || {};
+
 
     let tiempoInicial = 0; // Variable para almacenar el tiempo inicial del contador
     let intervalId; // Variable para almacenar el ID del intervalo del temporizador
-
-
-    if (!localStorage.getItem('partidaInfo')) {
-        localStorage.setItem('partidaInfo', JSON.stringify({
-            jugador: "Jugador1",
-            dificultad: "Fácil",
-            tiempoPorPregunta: 30,
-            puntajeAcumulado: 0
-        }));
-    }
-
-
-    const typingSpeed = 50;
-    let index = 0;
-    let preguntaSoloTexto = "";
-
     // Configuración de estilos para categorías
     const categoryConfig = {
         Geografia: {
@@ -76,9 +69,110 @@ document.addEventListener('DOMContentLoaded', async function () {
             buttonBackground: '#d4af37',
             footerColor: '#d4af37',
             backgroundImage: '../images/fondo.png',
-            icon: '../images/crown.png'
+            icon: '../images/musica.png'
         }
     };
+
+    if (!localStorage.getItem('partidaInfo')) {
+        localStorage.setItem('partidaInfo', JSON.stringify({
+            jugador: "Jugador1",
+            dificultad: "Fácil",
+            tiempoPorPregunta: 30,
+            puntajeAcumulado: 0
+        }));
+    }
+
+
+    // Actualizar el DOM con el puntaje inicial
+    if (puntajeElement) puntajeElement.textContent = partidaInfo.puntajeAcumulado;
+    try {
+        // Obtener la pregunta actual del localStorage
+        const preguntaActual = JSON.parse(localStorage.getItem('preguntaActual'));
+        console.log("Pregunta actual cargada desde localStorage:", preguntaActual);
+
+        actualizarInformacionPartida();
+
+        if (!preguntaActual || !preguntaActual.enunciado || !preguntaActual.opcionesDeRespuesta) {
+            alert('No se encontró una pregunta válida. Por favor, regresa a la ruleta.');
+            window.location.href = 'unJugador.html';
+            return;
+        }
+
+        console.log("Datos recibidos del backend:", preguntaActual);
+
+        // Mostrar la pregunta y las opciones
+        categoriaElement.textContent = preguntaActual.categoria;
+        applyCategoryStyles(preguntaActual.categoria);
+
+        preguntaCompleta = preguntaActual.enunciado;
+        preguntaSoloTexto = preguntaCompleta.split('?')[0] + '?';
+        startTextAnimation(preguntaSoloTexto);
+        // Guardar los datos de la pregunta en localStorage
+        localStorage.setItem('preguntaGuardada', JSON.stringify({
+            enunciado: preguntaActual.enunciado,
+            opciones: preguntaActual.opcionesDeRespuesta,
+            respuestaCorrecta: preguntaActual.respuestaCorrecta,
+        }));
+        // Agregar evento a las opciones
+        preguntaActual.opcionesDeRespuesta.forEach((opcion, index) => {
+            const opcionElement = document.getElementById(`opcion${index + 1}`);
+            if (opcionElement) {
+                opcionElement.textContent = opcion;
+                opcionElement.addEventListener('click', () => {
+
+                    detenerContador();
+
+                    const letraOpcionElegida = String.fromCharCode(65 + index);
+                    const respuesta = {
+                        preguntaAsociada: {
+                            enunciado: preguntaActual.enunciado,
+                            respuestaCorrecta: preguntaActual.respuestaCorrecta,
+                        },
+                        opcionElegida: letraOpcionElegida,
+                        tiempoTranscurrido: obtenerTiempoTranscurrido(),
+                        jugador: { nombre: partidaInfo.jugador },
+                    };
+
+
+
+                    validarRespuesta(respuesta);
+                });
+            }
+        });
+
+    } catch (error) {
+        console.error('Error al registrar la respuesta:', error);
+        showAlert('Hubo un error al registrar la respuesta. Por favor, inténtalo nuevamente.');
+    }
+
+
+    const cards = document.querySelectorAll('.card-container');
+    const cardCosts = {
+        hint: 500,
+        fifty: 750,
+        roll: 1000,
+        king: 0
+    };
+
+
+    console.log(partidaInfo.puntajeAcumulado);
+    if (puntajeElement) puntajeElement.textContent = partidaInfo.puntajeAcumulado;
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+            const cardId = card.id;
+            const cardCost = cardCosts[cardId];
+
+            if (partidaInfo.puntajeAcumulado >= cardCost) {
+                actualizarPuntaje(-cardCost);
+                console.log(`Tarjeta ${cardId} comprada.`);
+                card.classList.add('disabled');
+                activateCardPower(cardId);
+            } else {
+                showAlert('No tienes suficientes puntos para comprar este poder.');
+            }
+        });
+    });
 
     // Función para aplicar estilos según la categoría
     function applyCategoryStyles(category) {
@@ -109,151 +203,94 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     }
 
-    try {
-        // Obtener la pregunta actual del localStorage
-        const preguntaActual = JSON.parse(localStorage.getItem('preguntaActual'));
-        console.log("Pregunta actual cargada desde localStorage:", preguntaActual);
 
-        actualizarInformacionPartida();
+    async function validarRespuesta(respuesta) {
+        try {
+            const response = await fetch('https://localhost:8080/api/registrarRespuesta', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(respuesta),
+            });
 
-        if (!preguntaActual || !preguntaActual.enunciado || !preguntaActual.opcionesDeRespuesta) {
-            alert('No se encontró una pregunta válida. Por favor, regresa a la ruleta.');
-            window.location.href = 'unJugador.html';
-            return;
-        }
+            const mensaje = await response.text();
+            console.log("Mensaje del servidor:", mensaje);
 
-        console.log("Datos recibidos del backend:", preguntaActual);
+            if (mensaje.startsWith("Respuesta correcta")) {
+                // Extraer el puntaje obtenido
 
-        // Mostrar la pregunta y las opciones
-        categoriaElement.textContent = preguntaActual.categoria;
-        applyCategoryStyles(preguntaActual.categoria);
 
-        preguntaCompleta = preguntaActual.enunciado;
-        preguntaSoloTexto = preguntaCompleta.split('?')[0] + '?';
-        startTextAnimation(preguntaSoloTexto);
+                const puntajeObtenido = manejarPuntaje(mensaje);
 
-        // Agregar evento a las opciones
-        preguntaActual.opcionesDeRespuesta.forEach((opcion, index) => {
-            const opcionElement = document.getElementById(`opcion${index + 1}`);
-            if (opcionElement) {
-                opcionElement.textContent = opcion;
-                opcionElement.addEventListener('click', () => {
+                // Actualizar y guardar en localStorage
+                actualizarPuntaje(puntajeObtenido);
 
-                    detenerContador();
+                actualizarInformacionPartida();
+                winSound.currentTime = 0;
+                winSound.play();
 
-                    const letraOpcionElegida = String.fromCharCode(65 + index);
-                    const respuesta = {
-                        preguntaAsociada: {
-                            enunciado: preguntaActual.enunciado,
-                            respuestaCorrecta: preguntaActual.respuestaCorrecta,
-                        },
-                        opcionElegida: letraOpcionElegida,
-                        tiempoTranscurrido: obtenerTiempoTranscurrido(),
-                        jugador: { nombre: partidaInfo.jugador },
-                    };
-                    validarRespuesta(respuesta);
+                // Mostrar alerta y redirigir
+                showAlert(`¡Respuesta correcta! +${puntajeObtenido} puntos`, () => {
+                    setTimeout(() => {
+                        window.location.href = 'unJugador.html';
+                    }, 500);
                 });
-            }
-        });
-
-
-        async function validarRespuesta(respuesta) {
-            try {
-                const response = await fetch('https://localhost:8080/api/registrarRespuesta', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(respuesta),
+            } else if (mensaje.startsWith("Respuesta incorrecta")) {
+                // Eliminar información de la partida y redirigir
+                loserSound.currentTime = 0;
+                loserSound.play();
+                finAlert(() => {
+                    // Redirigir a la pantalla inicial o realizar otras acciones
+                    localStorage.removeItem('partidaInfo');
+                    setTimeout(() => {
+                        window.location.href = 'start.html';
+                    }, 500);
                 });
-
-                const mensaje = await response.text();
-                console.log("Mensaje del servidor:", mensaje);
-
-                if (mensaje.startsWith("Respuesta correcta")) {
-                    // Extraer el puntaje obtenido
-
-
-                    const puntajeObtenido = manejarPuntaje(mensaje);
-
-                    // Actualizar y guardar en localStorage
-                    partidaInfo.puntajeAcumulado += puntajeObtenido;
-                    localStorage.setItem('partidaInfo', JSON.stringify(partidaInfo));
-                    actualizarInformacionPartida();
-                    winSound.currentTime = 0;
-                    winSound.play();
-
-                    // Mostrar alerta y redirigir
-                    showAlert(`¡Respuesta correcta! +${puntajeObtenido} puntos`, () => {
-                        setTimeout(() => {
-                            window.location.href = 'unJugador.html';
-                        }, 500);
-                    });
-                } else if (mensaje.startsWith("Respuesta incorrecta")) {
-                    // Eliminar información de la partida y redirigir
-                    loserSound.currentTime = 0;
-                    loserSound.play();
-                    finAlert(() => {
-                        // Redirigir a la pantalla inicial o realizar otras acciones
-                        localStorage.removeItem('partidaInfo');
-                        setTimeout(() => {
-                            window.location.href = 'start.html';
-                        }, 500);
-                    });
-                } else {
-                    // Caso de mensaje inesperado
-                    showAlert("Hubo un error inesperado. Por favor, intenta nuevamente.");
-                }
-            } catch (error) {
-                console.error("Error al registrar la respuesta:", error);
-                showAlert("Hubo un error al registrar la respuesta. Por favor, inténtalo nuevamente.");
+            } else {
+                // Caso de mensaje inesperado
+                showAlert("Hubo un error inesperado. Por favor, intenta nuevamente.");
             }
+        } catch (error) {
+            console.error("Error al registrar la respuesta:", error);
+            showAlert("Hubo un error al registrar la respuesta. Por favor, inténtalo nuevamente.");
         }
-
-        function manejarPuntaje(message) {
-            const puntajeObtenido = parseInt(message.split(":")[1]?.trim()) || 0;
-            console.log("Puntaje obtenido:", puntajeObtenido);
-            return puntajeObtenido;
-        }
-
-        function actualizarInformacionPartida() {
-            const partidaInfo = JSON.parse(localStorage.getItem('partidaInfo'));
-
-            if (!partidaInfo) {
-                console.warn("No se encontró información de la partida.");
-                return;
-            }
-
-
-
-            const nombreUElement = document.getElementById('nombreU');
-            const dificultadElement = document.getElementById('dificultad');
-            const tiempoElement = document.getElementById('tiempo');
-            const puntajeElement = document.getElementById('puntaje');
-
-            if (nombreUElement) nombreUElement.textContent = partidaInfo.jugador || "Desconocido";
-            if (dificultadElement) dificultadElement.textContent = partidaInfo.dificultad || "No asignada";
-            if (tiempoElement) tiempoElement.textContent = `${partidaInfo.tiempoPorPregunta || 0} segundos`;
-            if (puntajeElement) puntajeElement.textContent = partidaInfo.puntajeAcumulado || 0;
-
-            console.log("Información de la partida cargada en pregunta.JS:", partidaInfo);
-        }
-
-
-
-    } catch (error) {
-        console.error('Error al registrar la respuesta:', error);
-        showAlert('Hubo un error al registrar la respuesta. Por favor, inténtalo nuevamente.');
     }
 
+    function manejarPuntaje(message) {
+        const puntajeObtenido = parseInt(message.split(":")[1]?.trim()) || 0;
+        console.log("Puntaje obtenido:", puntajeObtenido);
+        return puntajeObtenido;
+    }
 
+    function actualizarInformacionPartida() {
+        const partidaInfo = JSON.parse(localStorage.getItem('partidaInfo')) || {};
 
+        const nombreUElement = document.getElementById('nombreU');
+        const dificultadElement = document.getElementById('dificultad');
+        const tiempoElement = document.getElementById('tiempo');
+        const puntajeElement = document.getElementById('puntaje');
 
+        if (nombreUElement) nombreUElement.textContent = partidaInfo.jugador || "Desconocido";
+        if (dificultadElement) dificultadElement.textContent = partidaInfo.dificultad || "No asignada";
+        if (tiempoElement) tiempoElement.textContent = `${partidaInfo.tiempoPorPregunta || 0} segundos`;
+        if (puntajeElement) puntajeElement.textContent = partidaInfo.puntajeAcumulado || 0;
 
+        console.log("Información de la partida cargada:", partidaInfo);
+    }
     function startTextAnimation(text) {
         index = 0;
         preguntaTextoElement.innerHTML = "";
         typingSound.play();
+
+        // Obtiene todos los botones dentro de #opciones y los deshabilita  
+        const botones = document.querySelectorAll('#opciones button');
+        botones.forEach(boton => {
+            boton.disabled = true;
+        });
+        document.getElementById('poderes').classList.add('disabled');
+
+
         typeDialog(text);
     }
 
@@ -266,9 +303,15 @@ document.addEventListener('DOMContentLoaded', async function () {
             setTimeout(() => typeDialog(text), typingSpeed);
         } else {
             typingSound.pause();
+            botones = document.querySelectorAll('#opciones button');
+            botones.forEach(boton => {
+                boton.disabled = false;
+            });
+            document.getElementById('poderes').classList.remove('disabled');
+
             startTimer(partidaInfo.tiempoPorPregunta, () => {
                 loserSound.currentTime = 0;
-                    loserSound.play();
+                loserSound.play();
                 tituloFin.textContent = 'SE ACABO EL TIEMPO!';
                 finAlert(() => {
                     // Redirigir a la pantalla inicial o realizar otras acciones
@@ -399,29 +442,150 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
         }, { once: true });
     }
-    const tituloAlert = document.getElementById('tituloAlert');
-    const rollCard = document.getElementById('roll');
-    rollCard.addEventListener('click', () =>{
-        tituloAlert.textContent='Roll Card'
-        showAlert('Volviendo a la ruleta',() => {
+
+    function actualizarPuntaje(puntos) {
+        // Recuperar partidaInfo
+        const partidaInfo = JSON.parse(localStorage.getItem('partidaInfo')) || {};
+
+        // Asegurar estructura
+        partidaInfo.puntajeAcumulado = (partidaInfo.puntajeAcumulado || 0) + puntos;
+
+        // Guardar en localStorage
+        localStorage.setItem('partidaInfo', JSON.stringify(partidaInfo));
+
+        // Actualizar el DOM
+        const puntajeElement = document.getElementById('puntaje');
+        if (puntajeElement) puntajeElement.textContent = partidaInfo.puntajeAcumulado;
+
+        console.log("Puntaje actualizado:", partidaInfo.puntajeAcumulado);
+    }
+
+
+    function activateCardPower(cardId) {
+        switch (cardId) {
+            case 'hint':
+                console.log('Activando poder Hint...');
+                activateHintCard();
+                break;
+            case 'fifty':
+                console.log('Activando poder Fifty-Fifty...');
+                activateFiftyFifty();
+                break;
+            case 'roll':
+                console.log('Activando poder Roll...');
+                activateRollPower();
+                break;
+            case 'king':
+                console.log('Activando poder King...');
+                activateKingPower();
+                break;
+            default:
+                console.warn(`No se reconoce el poder asociado a la tarjeta con ID: ${cardId}`);
+        }
+    }
+    // Funciones de cada poder
+    function activateKingPower() {
+        console.log("Activando el poder King: duplicar puntos.");
+        showAlert("¡Puntos duplicados!");
+        // Lógica para duplicar puntos (puedes ajustar según tu lógica actual)
+        const puntajeElement = document.getElementById('puntaje');
+        const puntajeActual = parseInt(puntajeElement.textContent) || 0;
+        puntajeElement.textContent = puntajeActual * 2;
+        partidaInfo.puntajeAcumulado =puntajeActual * 2;
+    }
+
+    function activateRollPower() {
+        const tituloAlert = document.getElementById('tituloAlert');
+        tituloAlert.textContent = 'Roll Card'
+        showAlert('Volviendo a la ruleta', () => {
             window.location.href = 'unJugador.html';
         });
+    }
 
-    });
+    async function activateHintCard() {
+        console.log("Activando el poder Hint: mostrar pista.");
+    
+        const preguntaActual = JSON.parse(localStorage.getItem('preguntaActual'));
+    
+        if (preguntaActual && preguntaActual.enunciado) {
+            try {
+                // Realizar la llamada al backend para obtener la pista
+                const response = await fetch('https://localhost:8080/api/pista', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ pregunta: preguntaActual.enunciado }),
+                });
+    
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log("Pista obtenida:", data.pista);
+    
+                    // Mostrar la pista en la UI
+                    showAlert(`¡Pista! ${data.pista}`);
+                } else {
+                    console.error("Error al obtener la pista:", response.statusText);
+                    showAlert("No se pudo generar una pista. Intenta nuevamente.");
+                }
+            } catch (error) {
+                console.error("Error al realizar la solicitud para obtener la pista:", error);
+                showAlert("Hubo un error al generar la pista. Intenta nuevamente.");
+            }
+        } else {
+            showAlert("No hay pregunta actual para generar una pista.");
+        }
+    }
 
+    function activateFiftyFifty() {
+        // Recuperar los datos de la pregunta desde el localStorage
+        const preguntaGuardada = JSON.parse(localStorage.getItem('preguntaGuardada'));
 
-    const cardContainers = document.querySelectorAll('.card-container');
+        if (!preguntaGuardada) {
+            console.warn("No se encontraron datos de la pregunta en el localStorage.");
+            return;
+        }
 
-    cardContainers.forEach(container => {
-        const tooltip = container.querySelector('.tooltip');
-        if (!tooltip) return;
+        const respuestaCorrecta = preguntaGuardada.respuestaCorrecta; // Ejemplo: "B"
 
-        container.addEventListener('mouseenter', () => {
-            tooltip.classList.remove('hidden');
+        // Seleccionar todos los botones dentro de #opciones
+        const opciones = Array.from(document.querySelectorAll('#opciones button'));
+
+        // Mapear la letra a un índice basado en ASCII
+        const indiceCorrecta = respuestaCorrecta.charCodeAt(0) - 65; // A=0, B=1, C=2, D=3
+
+        // Identificar la opción correcta basada en el índice
+        const correcta = opciones[indiceCorrecta];
+
+        if (!correcta) {
+            console.warn("No se encontró la opción correcta en las opciones.");
+            return;
+        }
+
+        // Filtrar las opciones incorrectas
+        const incorrectas = opciones.filter((_, index) => index !== indiceCorrecta);
+
+        if (incorrectas.length >= 2) {
+            // Seleccionar 2 opciones incorrectas para eliminar
+            const eliminadas = incorrectas.slice(0, 2);
+            eliminadas.forEach(opcion => {
+                opcion.disabled = true;
+                opcion.style.opacity = 0.5; // Reducir visibilidad de las incorrectas eliminadas
+            });
+        } else {
+            console.warn("No hay suficientes opciones incorrectas para eliminar.");
+        }
+
+        // Mantener habilitadas la opción correcta y cualquier incorrecta que no fue eliminada
+        opciones.forEach(opcion => {
+            if (!opcion.disabled) {
+                opcion.disabled = false; // Asegurar que las opciones restantes estén habilitadas
+                opcion.style.opacity = 1; // Restaurar visibilidad completa
+            }
         });
+    }
 
-        container.addEventListener('mouseleave', () => {
-            tooltip.classList.add('hidden');
-        });
-    });
+
+
 });
+

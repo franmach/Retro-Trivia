@@ -4,7 +4,7 @@ const categories = [
     { name: 'Arte', imageSrc: '../images/arte.png', backgroundSrc: '../images/fondoA.png' },
     { name: 'Geografia', imageSrc: '../images/earth.png', backgroundSrc: '../images/fondoGeo.png' },
     { name: 'Ciencia', imageSrc: '../images/ciencia.png', backgroundSrc: '../images/fondoCie.png' },
-    { name: 'Corona', imageSrc: '../images/crown.png', backgroundSrc: '../images/fond.png' },
+    { name: 'Musica', imageSrc: '../images/musica.png', backgroundSrc: '../images/fond.png' },
     { name: 'Entretenimiento', imageSrc: '../images/pop.png', backgroundSrc: '../images/fondoE.png' },
     { name: 'Deportes', imageSrc: '../images/deporte.png', backgroundSrc: '../images/fondoD.png' },
 ];
@@ -66,29 +66,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    // Leer la información de la partida desde `localStorage`
-    function actualizarInformacionPartida() {
-        const partidaInfo = JSON.parse(localStorage.getItem('partidaInfo'));
-
-        if (!partidaInfo) {
-            console.warn("No se encontró información de la partida.");
-            return;
-        }
-
-        console.log("Información de la partida cargada en unJugador:", partidaInfo); // LOG para verificar los datos
-
-        const nombreUElement = document.getElementById('nombreU');
-        const dificultadElement = document.getElementById('dificultad');
-        const tiempoElement = document.getElementById('tiempo');
-        const puntajeElement = document.getElementById('puntaje');
-
-        if (nombreUElement) nombreUElement.textContent = partidaInfo.jugador || "Desconocido";
-        if (dificultadElement) dificultadElement.textContent = partidaInfo.dificultad || "No asignada";
-        if (tiempoElement) tiempoElement.textContent = `${partidaInfo.tiempoPorPregunta || 0} segundos`;
-        if (puntajeElement) puntajeElement.textContent = partidaInfo.puntajeAcumulado || 0;
-    }
-
+    
 });
 
+// Leer la información de la partida desde `localStorage`
+function actualizarInformacionPartida() {
+    const partidaInfo = JSON.parse(localStorage.getItem('partidaInfo'));
+
+    if (!partidaInfo) {
+        console.warn("No se encontró información de la partida.");
+        return;
+    }
+
+    console.log("Información de la partida cargada en unJugador:", partidaInfo); // LOG para verificar los datos
+
+    const nombreUElement = document.getElementById('nombreU');
+    const dificultadElement = document.getElementById('dificultad');
+    const tiempoElement = document.getElementById('tiempo');
+    const puntajeElement = document.getElementById('puntaje');
+
+    if (nombreUElement) nombreUElement.textContent = partidaInfo.jugador || "Desconocido";
+    if (dificultadElement) dificultadElement.textContent = partidaInfo.dificultad || "No asignada";
+    if (tiempoElement) tiempoElement.textContent = `${partidaInfo.tiempoPorPregunta || 0} segundos`;
+    if (puntajeElement) puntajeElement.textContent = partidaInfo.puntajeAcumulado || 0;
+}
 
 

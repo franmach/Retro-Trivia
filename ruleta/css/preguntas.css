@@ -193,3 +193,7 @@
 .hidden {
     display: none;
 }
+.disabled {
+    pointer-events: none; /* Bloquea interacciones */
+    opacity: 0.5;         /* Reduce visibilidad */
+}

@@ -62,3 +62,6 @@ document.getElementById('btnLogin').addEventListener('click', function (event) {
 
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+    localStorage.removeItem('userInfo');
+});
