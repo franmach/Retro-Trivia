@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.0" xmlns="https://jakarta.ee/xml/ns/persistence">
+  <persistence-unit name="game_db">
+    <class>com.example.model.ConfiguracionPartida</class>
+    <class>com.example.model.Pregunta</class>
+    <class>com.example.model.Partida</class>
+    <class>com.example.model.Jugador</class>
+    <class>com.example.model.Respuesta</class>
+    <class>com.example.model.Ranking</class>
+    <class>com.example.model.Cronometro</class>
+    <class>com.example.model.SistemaAutenticacion</class>
+    <properties>
+      <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+      <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/game_db"/>
+      <property name="jakarta.persistence.jdbc.user" value="root"/>
+      <property name="jakarta.persistence.jdbc.password" value="password"/>
+      <property name="jakarta.persistence.schema-generation.database.action" value="update"/>
+    </properties>
+  </persistence-unit>
+</persistence>

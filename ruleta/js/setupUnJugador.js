@@ -38,8 +38,8 @@ document.getElementById("startGameBtn").addEventListener("click", async () => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(configuracion)
-        });
+            body: JSON.stringify(configuracion),
+            });
 
         if (!response.ok) {
             throw new Error('Error al iniciar la partida');
