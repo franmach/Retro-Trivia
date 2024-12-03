@@ -58,8 +58,6 @@ document.getElementById('btnLogin').addEventListener('click', function (event) {
         // Si la validación es correcta, redirige a index.html  
         window.location.href = 'start.html';
     }
-
-
 });
 
 document.addEventListener('DOMContentLoaded', () => {

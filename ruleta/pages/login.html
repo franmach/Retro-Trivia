@@ -16,25 +16,23 @@
 
 <body>
     <div class="gameboy-container">
-        <div id="loginScreen" >
-
-        <div class="grid-item gif host">
-            <img src="../images/spkLogin2.gif" id="spkHost"  class="gif-img" >
-            <img src="../images/host2.gif" id="host" class="gif-img" >
-        </div>
-        <!-- Pantalla de Login -->
-         
-        
-            <!-- Cuadro de diálogo para ingresar nombre -->
-            <div class=" loginForm nes-container with-title">
+        <div class="grid-container">
+            <!-- Host GIF -->
+            <div class="gif host">
+                <img src="../images/spkLogin2.gif" id="spkHost" class="gif-img">
+                <img src="../images/host2.gif" id="host" class="gif-img">
+            </div>
+    
+            <!-- Formulario de Login -->
+            <div class="loginForm nes-container with-title">
                 <h3 class="title" style="width: fit-content; font-size: 20px;">Ingresar</h3>
-
+    
                 <label for="txtLoginUsuario">Usuario</label>
                 <input type="text" id="txtLoginUsuario" class="nes-input" required>
-
+    
                 <label for="txtLoginContrasena">Contraseña</label>
                 <input type="password" id="txtLoginContrasena" class="nes-input" required minlength="8">
-
+    
                 <button id="btnLogin" class="nes-btn" onmouseover="hoverSound.currentTime = 0, hoverSound.play()"
                     onclick="menuSound.play()">Login</button>
                 <a onmouseover="cambiarTexto()" onmouseout="restaurarTexto()" onclick="aRegistro()" id="registrarse">
@@ -42,23 +40,20 @@
                 </a>
             </div>
         </div>
-
-    <!-- Diálogo de alerta personalizado -->
-    <dialog class="nes-dialog " id="alertDialog">
-        <form method="dialog" style="align-items: center;
-            display: flex;
-            flex-direction: column;
-            ">
-            <p class="title"></p>
-            <p id="alertMessage"></p>
-            <menu class="dialog-menu" style="margin: auto; padding: 0;">
-                <button id="btnAlerta" class="nes-btn menuBtn">Aceptar</button>
-            </menu>
-        </form>
-    </dialog>
-
-    <script src="../js/login.js" defer></script>
-    <script src="../js/audioController.js" defer></script>
+    
+        <!-- Diálogo de alerta personalizado -->
+        <dialog class="nes-dialog" id="alertDialog">
+            <form method="dialog" style="align-items: center; display: flex; flex-direction: column;">
+                <p class="title"></p>
+                <p id="alertMessage"></p>
+                <menu class="dialog-menu" style="margin: auto; padding: 0;">
+                    <button id="btnAlerta" class="nes-btn menuBtn">Aceptar</button>
+                </menu>
+            </form>
+        </dialog>
+    
+        <script src="../js/login.js" defer></script>
+        <script src="../js/audioController.js" defer></script>
     
 </body>
 

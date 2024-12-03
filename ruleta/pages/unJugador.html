@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Ruleta de la Fortuna</title>
@@ -8,15 +9,16 @@
     <link rel="stylesheet" href="../node_modules/nes.css/css/nes.min.css">
 
 </head>
+
 <body>
     <div class="gameboy-container">
         <div id="gameScreen" class="grid-container">
             <!-- GIF en la parte inferior izquierda -->
             <div class="grid-item gif host">
-                <img src="../images/spkGame.gif" id="spkHost" class="gif-img" >
-                <img src="../images/host2.gif" class="gif-img" >
+                <img src="../images/spkGame.gif" id="spkHost" class="gif-img">
+                <img src="../images/host2.gif" class="gif-img">
             </div>
-    
+
             <!-- Ruleta y botones en la columna del medio -->
             <div class="grid-item wheel-section">
                 <div id="arrowEl"><img src="../images/arrow.png" style="width: 50px;"></div>
@@ -32,7 +34,7 @@
                     <label for="nombreU" id="nombreU">Usuario</label>
                 </div>
                 <div class="dificultad">
-                    <img src="../images/a.png" id="icon">
+                    <img src="../images/rayo.png" id="icon">
                     <label for="dificultad" id="dificultad">Dificultad</label>
                 </div>
                 <div class="tiempo">
@@ -42,10 +44,16 @@
                 <div class="puntaje">
                     <img src="../images/coin.png" id="icon">
                     <label for="coin" id="puntaje">Puntaje</label>
-            </div>
+                </div>
+                <div class="racha">
+                    <img src="../images/fire.png" id="icon">
+                    <label>x</label> 
+                    <label id="racha">Racha</label> 
+                </div>
+
             </div>
 
-       
+
 
 
         </div>
@@ -54,4 +62,5 @@
     <script src="../js/unJugador.js" type="module"></script>
     <script src="../js/audioController.js" defer></script>
 </body>
+
 </html>

@@ -12,7 +12,8 @@ function iniciarNuevaPartida() {
         jugador: "Jugador1",
         dificultad: "Fácil",
         tiempoPorPregunta: 30,
-        puntajeAcumulado: 0
+        puntajeAcumulado: 0,
+        racha: 0 
     }));
     
 
