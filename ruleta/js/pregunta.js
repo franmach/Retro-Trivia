@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async function () {
-  
+
 
     const puntajeElement = document.getElementById('puntaje');
     const typingSpeed = 50;
@@ -64,11 +64,11 @@ document.addEventListener('DOMContentLoaded', async function () {
             backgroundImage: '../images/fondoE.png',
             icon: '../images/pop.png'
         },
-        Corona: {
-            textColor: '#d4af37',
-            buttonBackground: '#d4af37',
-            footerColor: '#d4af37',
-            backgroundImage: '../images/fondo.png',
+        Musica: {
+            textColor: 'black',
+            buttonBackground: '#fdee39',
+            footerColor: '#fdee39',
+            backgroundImage: '../images/fondoMusica.png',
             icon: '../images/musica.png'
         }
     };
@@ -197,13 +197,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             button.style.backgroundColor = config.buttonBackground;
         });
 
-        // Cambiar el color del footer
-        colorFooter.forEach(element => {
-            element.style.color = config.footerColor;
-        });
     }
-
-
+    
     async function validarRespuesta(respuesta) {
         try {
             const response = await fetch('https://localhost:8080/api/registrarRespuesta', {
@@ -217,14 +212,18 @@ document.addEventListener('DOMContentLoaded', async function () {
             const mensaje = await response.text();
             console.log("Mensaje del servidor:", mensaje);
 
+            const partidaInfo = JSON.parse(localStorage.getItem('partidaInfo'));
+
             if (mensaje.startsWith("Respuesta correcta")) {
                 // Extraer el puntaje obtenido
-
-
                 const puntajeObtenido = manejarPuntaje(mensaje);
 
-                // Actualizar y guardar en localStorage
-                actualizarPuntaje(puntajeObtenido);
+                // Actualizar puntaje y racha
+                partidaInfo.puntajeAcumulado += puntajeObtenido;
+                partidaInfo.racha = (partidaInfo.racha || 0) + 1; // Incrementar la racha
+
+                // Guardar en localStorage
+                localStorage.setItem('partidaInfo', JSON.stringify(partidaInfo));
 
                 actualizarInformacionPartida();
                 winSound.currentTime = 0;
@@ -237,11 +236,18 @@ document.addEventListener('DOMContentLoaded', async function () {
                     }, 500);
                 });
             } else if (mensaje.startsWith("Respuesta incorrecta")) {
-                // Eliminar información de la partida y redirigir
+                // Calcular puntaje final
+                const puntajeFinal = partidaInfo.puntajeAcumulado * (partidaInfo.racha || 1);
+
+                // Resetear la racha
+                partidaInfo.racha = 0;
+                localStorage.setItem('partidaInfo', JSON.stringify(partidaInfo));
+
+                // Mostrar el puntaje final
                 loserSound.currentTime = 0;
                 loserSound.play();
-                finAlert(() => {
-                    // Redirigir a la pantalla inicial o realizar otras acciones
+                finAlert(puntajeFinal, () => {
+                    // Redirigir o reiniciar el juego
                     localStorage.removeItem('partidaInfo');
                     setTimeout(() => {
                         window.location.href = 'start.html';
@@ -256,6 +262,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             showAlert("Hubo un error al registrar la respuesta. Por favor, inténtalo nuevamente.");
         }
     }
+
 
     function manejarPuntaje(message) {
         const puntajeObtenido = parseInt(message.split(":")[1]?.trim()) || 0;
@@ -310,10 +317,12 @@ document.addEventListener('DOMContentLoaded', async function () {
             document.getElementById('poderes').classList.remove('disabled');
 
             startTimer(partidaInfo.tiempoPorPregunta, () => {
+                const puntajeFinal = partidaInfo.puntajeAcumulado * (partidaInfo.racha || 1);
+
                 loserSound.currentTime = 0;
                 loserSound.play();
                 tituloFin.textContent = 'SE ACABO EL TIEMPO!';
-                finAlert(() => {
+                finAlert(puntajeFinal,() => {
                     // Redirigir a la pantalla inicial o realizar otras acciones
                     window.location.href = 'start.html';
                 });
@@ -407,7 +416,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         }, { once: true });
     }
 
-    function finAlert(callback) {
+    function finAlert(puntajeFinal, callback) {
         const closeButton = document.getElementById('btnFin');
         const finDialog = document.getElementById('finDialog');
 
@@ -416,19 +425,14 @@ document.addEventListener('DOMContentLoaded', async function () {
             return;
         }
 
-        // Obtener información de la partida desde `localStorage`
-        const partidaInfo = JSON.parse(localStorage.getItem('partidaInfo'));
-        if (!partidaInfo) {
-            console.warn("No se encontró información de la partida en el `localStorage`.");
-            return;
-        }
-
         // Construir contenido dinámico con los datos de la partida
         const finMessageElement = document.getElementById('finMessage');
         finMessageElement.innerHTML = `
             <p>Jugador: ${partidaInfo.jugador || "Desconocido"}</p>
             <p>Dificultad: ${partidaInfo.dificultad || "No asignada"}</p>
-            <p>Puntaje Final: ${partidaInfo.puntajeAcumulado || 0}</p>
+            <P>Puntaje Acumulado: ${partidaInfo.puntajeAcumulado || "0"}</p>
+            <P>Racha: x${partidaInfo.racha || "0"}</p>
+            <p>Puntaje Final: ${puntajeFinal}</p>
         `;
 
         // Muestra el cuadro de diálogo
@@ -442,6 +446,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             }
         }, { once: true });
     }
+
 
     function actualizarPuntaje(puntos) {
         // Recuperar partidaInfo
@@ -491,7 +496,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         const puntajeElement = document.getElementById('puntaje');
         const puntajeActual = parseInt(puntajeElement.textContent) || 0;
         puntajeElement.textContent = puntajeActual * 2;
-        partidaInfo.puntajeAcumulado =puntajeActual * 2;
+        partidaInfo.puntajeAcumulado = puntajeActual * 2;
     }
 
     function activateRollPower() {
@@ -504,9 +509,9 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     async function activateHintCard() {
         console.log("Activando el poder Hint: mostrar pista.");
-    
+
         const preguntaActual = JSON.parse(localStorage.getItem('preguntaActual'));
-    
+
         if (preguntaActual && preguntaActual.enunciado) {
             try {
                 // Realizar la llamada al backend para obtener la pista
@@ -517,12 +522,12 @@ document.addEventListener('DOMContentLoaded', async function () {
                     },
                     body: JSON.stringify({ pregunta: preguntaActual.enunciado }),
                 });
-    
+
                 if (response.ok) {
                     const data = await response.json();
                     console.log("Pista obtenida:", data.pista);
-    
-                    // Mostrar la pista en la UI
+                    const tituloFin = document.getElementById('tituloFin');
+                    tituloFin.textContent("PISTA")
                     showAlert(`¡Pista! ${data.pista}`);
                 } else {
                     console.error("Error al obtener la pista:", response.statusText);

@@ -25,10 +25,6 @@ function validateRegister() {
     return true;
 }
 
-
-
-
-
 function showAlert(message) {
     const alertDialog = document.getElementById('alertDialog');
     document.getElementById('alertMessage').textContent = message; // Establece el mensaje
@@ -37,7 +33,7 @@ function showAlert(message) {
 
 
 function aLogin() {
-    window.location.href = 'login.html'; // Redirige a la página de pregunta después de mostrar la categoría
+    window.location.href = 'login.html';
 
     const menuSound = document.getElementById('menuSound');
     if (menuSound) menuSound.play(); // Sonido al cambiar de pantalla  
@@ -48,6 +44,6 @@ document.getElementById('btnRegistrarse').addEventListener('click', function (ev
         event.preventDefault(); // Previene la acción si hay errores  
     } else {
         // Si la validación es correcta, procede con el registro
-        window.location.href = 'start.html';
+        window.location.href = 'login.html';
     }
 });

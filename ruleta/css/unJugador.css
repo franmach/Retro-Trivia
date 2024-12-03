@@ -71,13 +71,16 @@ canvas {
     display: flex;
     flex-direction: column;
     margin: auto;
+    align-items: center;
 }
-.puntaje ,  .nombreU ,  .tiempo , .dificultad{
+.puntaje ,  .nombreU ,  .tiempo , .dificultad , .racha{
     display: flex;
     flex-direction: row;
     align-items: center;
 }
-
+#racha{
+    margin: 0 !important;
+}
 #icon{
     width: 30px;
     margin-bottom: 0;

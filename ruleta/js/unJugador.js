@@ -3,10 +3,10 @@ import Ruleta from './ruleta.js';
 const categories = [
     { name: 'Arte', imageSrc: '../images/arte.png', backgroundSrc: '../images/fondoA.png' },
     { name: 'Geografia', imageSrc: '../images/earth.png', backgroundSrc: '../images/fondoGeo.png' },
-    { name: 'Ciencia', imageSrc: '../images/ciencia.png', backgroundSrc: '../images/fondoCie.png' },
-    { name: 'Musica', imageSrc: '../images/musica.png', backgroundSrc: '../images/fond.png' },
+    { name: 'Ciencia', imageSrc: '../images/ciencia.png',backgroundSrc: '../images/fondoCie.png' },
+    { name: 'Musica', imageSrc: '../images/musica.png', backgroundSrc: '../images/fondoMusica.png' },
     { name: 'Entretenimiento', imageSrc: '../images/pop.png', backgroundSrc: '../images/fondoE.png' },
-    { name: 'Deportes', imageSrc: '../images/deporte.png', backgroundSrc: '../images/fondoD.png' },
+    { name: 'Deportes', imageSrc: '../images/deporte.png', backgroundSrc: '../images/fondoD.png'},
 ];
 
 const ruleta = new Ruleta(
@@ -43,6 +43,8 @@ const ruleta = new Ruleta(
 // Evento para iniciar el giro de la ruleta
 document.getElementById('spinBtn').addEventListener('click', () => {
     ruleta.spin();
+    ruleta.spinButton.disabled = false;
+
 });
 
 // Configuración de efectos de hover para el host
@@ -77,7 +79,10 @@ function actualizarInformacionPartida() {
         console.warn("No se encontró información de la partida.");
         return;
     }
-
+    const rachaElement = document.getElementById('racha');
+    if (rachaElement) {
+        rachaElement.textContent = partidaInfo.racha || 0;
+    }
     console.log("Información de la partida cargada en unJugador:", partidaInfo); // LOG para verificar los datos
 
     const nombreUElement = document.getElementById('nombreU');

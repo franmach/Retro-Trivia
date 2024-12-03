@@ -114,7 +114,6 @@ class Ruleta {
 
     stopRotateWheel() {
         this.isSpinning = false;
-        this.spinButton.disabled = false;
         const degrees = this.angle * 180 / Math.PI + 90;
         const arcd = 360 / this.categories.length;
         const index = Math.floor((360 - degrees % 360) / arcd);

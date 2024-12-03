@@ -19,11 +19,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 /**
  *
  * @author menge
  */
+
 @RestController
 @RequestMapping("/api")
 public class PartidaController {
@@ -44,7 +46,7 @@ public class PartidaController {
         int puntajeInicial = 0;
 
         // Crear nueva partida con la configuración dada
-        partida = new Partida(jugador, configuracion.getDificultad(), configuracion.getTiempoPorPregunta(), puntajeInicial);
+        partida = new Partida(jugador, configuracion.getDificultad(), configuracion.getTiempoPorPregunta(), puntajeInicial , 0, 0);
 
         return ResponseEntity.ok(partida);
     }

@@ -17,16 +17,20 @@ public class Partida {
     private List<Pregunta> preguntas;
     private String estado; // Estado de la partida: "EN_PROGRESO", "FINALIZADA"
     private int puntaje; // Puntaje acumulado
+    private int rachaActual; // Nueva propiedad: racha actual de respuestas correctas
+    private int rachaMaxima; // Nueva propiedad: racha máxima alcanzada
     private ConfiguracionPartida configPartida;
     
 
     // Constructor inicial que asigna el jugador y la configuración del juego
-    public Partida(Jugador jugador, String dificultad, int tiempoPorPregunta, int puntaje) {
+    public Partida(Jugador jugador, String dificultad, int tiempoPorPregunta, int puntaje, int rachaActual, int rachaMaxima) {
         this.jugador = jugador;
         this.respuestas = new ArrayList<>();
         this.preguntas = new ArrayList<>();
         this.estado = "EN_PROGRESO";
         this.puntaje = puntaje;
+        this.rachaActual = 0;
+        this.rachaMaxima = 0;
         this.configPartida = new ConfiguracionPartida(dificultad , tiempoPorPregunta);
     }
     //Formula para calculo de puntaje
@@ -48,7 +52,16 @@ public class Partida {
         
         // Actualizar el puntaje total del jugador
         puntaje += puntajeObtenido;
-    }
+        
+        // Incrementar racha actual y actualizar racha máxima si es necesario
+            rachaActual++;
+            if (rachaActual > rachaMaxima) {
+                rachaMaxima = rachaActual;
+            }
+        } else {
+            // Resetear la racha si la respuesta es incorrecta
+            rachaActual = 0;
+        }
     
     }
     
@@ -64,6 +77,8 @@ public class Partida {
 
     public void finalizarPartida() {
         this.estado = "FINALIZADA";
+        // Multiplicar el puntaje por la racha máxima alcanzada
+        puntaje *= rachaMaxima > 0 ? rachaMaxima : 1;
         // Aquí podrías almacenar el resultado de la partida y actualizar el histórico del jugador
     }
 
@@ -72,6 +87,8 @@ public class Partida {
     public List<Respuesta> getRespuestas() { return respuestas; }
     public String getEstado() { return estado; }
     public int getPuntaje() { return puntaje; }
+    public int getRachaActual() { return rachaActual; }
+    public int getRachaMaxima() { return rachaMaxima; }
     public void setPuntaje(int puntaje) { this.puntaje = puntaje; }
 
     public ConfiguracionPartida getConfigPartida() {
