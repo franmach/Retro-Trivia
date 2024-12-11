@@ -20,8 +20,8 @@ body {
 
 /* Contenedor principal que actúa como la pantalla visible */
 .gameboy-container {
-    width: 66%; /* Ajusta para que encaje en el área transparente de la Game Boy */
-    height: 85%; /* Ajusta para que encaje en el área transparente de la Game Boy */
+    width: 86%; /* Ajusta para que encaje en el área transparente de la Game Boy */
+    height: 70%; /* Ajusta para que encaje en el área transparente de la Game Boy */
     border-radius: 5px;
     /*box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);*/
     display: flex;

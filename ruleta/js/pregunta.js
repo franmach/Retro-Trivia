@@ -65,8 +65,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             icon: '../images/pop.png'
         },
         Musica: {
-            textColor: 'black',
-            buttonBackground: '#fdee39',
+            textColor: '#ffff',
+            buttonBackground: 'black',
             footerColor: '#fdee39',
             backgroundImage: '../images/fondoMusica.png',
             icon: '../images/musica.png'
@@ -526,9 +526,9 @@ document.addEventListener('DOMContentLoaded', async function () {
                 if (response.ok) {
                     const data = await response.json();
                     console.log("Pista obtenida:", data.pista);
-                    const tituloFin = document.getElementById('tituloFin');
-                    tituloFin.textContent("PISTA")
-                    showAlert(`¡Pista! ${data.pista}`);
+                    const tituloAlert = document.getElementById('tituloAlert');
+                    tituloAlert.textContent= 'PISTA';
+                    showAlert(data.pista);
                 } else {
                     console.error("Error al obtener la pista:", response.statusText);
                     showAlert("No se pudo generar una pista. Intenta nuevamente.");
