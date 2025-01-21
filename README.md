@@ -67,7 +67,19 @@ Este proyecto fue desarrollado como parte de las materias **Diseño y Desarrollo
 ---
 
 ## Capturas de Pantalla
+![login](https://github.com/user-attachments/assets/8a5a9d37-ba3b-4371-89b9-11154a2668cb)
+![registro](https://github.com/user-attachments/assets/90271df2-dedc-4344-8478-96ccd258afe1)
+![start](https://github.com/user-attachments/assets/07317a75-4705-4629-ac52-67bac5051a05)
+![seleccionJug](https://github.com/user-attachments/assets/2cd3576e-3d30-4886-a33a-7b989787d090)
+
 ![config](https://github.com/user-attachments/assets/3e6c069a-98d7-4e82-8fe6-4aa97658151b)
+![ruleta](https://github.com/user-attachments/assets/6e810d99-a130-4074-8eb1-b807f0712f7f)
+![preguntaDep](https://github.com/user-attachments/assets/d1e0435f-a4f1-4b9a-a372-9c0bc86944fd)
+
+![correcta](https://github.com/user-attachments/assets/252235ff-d526-4ac4-b56a-28ef245ac7cf)
+![incorrecta](https://github.com/user-attachments/assets/feb9bebf-3d64-4c2d-b23d-d475d00a025e)
+
+![pistaHint](https://github.com/user-attachments/assets/091d409c-69f0-4141-95fb-7f6d897b28e1)
 
 ---
 
