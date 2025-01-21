@@ -67,7 +67,7 @@ Este proyecto fue desarrollado como parte de las materias **Diseño y Desarrollo
 ---
 
 ## Capturas de Pantalla
-(Inserta imágenes representativas del juego, como la pantalla de inicio, la ruleta de categorías y una pregunta dinámica.)
+![config](https://github.com/user-attachments/assets/3e6c069a-98d7-4e82-8fe6-4aa97658151b)
 
 ---
 
